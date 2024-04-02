@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  percent_indicator: ^4.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -59,9 +60,14 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+      -  lib/images/LIRA Logo - Android App Icon - 192x192.png
+      -  lib/images/LIRA Logo - Google Play Store Logo - 512x512.png
+      -  lib/images/LIRA Logo - Original - 5000x5000.png
+      -  lib/images/LIRA Logo - Original with Transparent Background - 5000x5000.png
+      -  lib/images/LIRA Logo - Original with Transparent Background - cropped.png
+      - lib/images/LIRA Logo - Transparent Background No Slogans- cropped.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

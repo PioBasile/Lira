@@ -1,5 +1,5 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "cmake.sourceDirectory": "/home/pio/Code/Desktop/flutter projects/test/linux",
-    "cmake.configureOnOpen": true
+    "cmake.sourceDirectory": "/home/pio/Desktop/flutter projects/Lira/Lira/linux/flutter",
+    "cmake.configureOnOpen": false
 }

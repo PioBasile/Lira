@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:test/components/inputbox.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class Home extends StatelessWidget {
   
@@ -34,49 +36,74 @@ class Home extends StatelessWidget {
                 children: [
                   
                   Center(
-                    child:
-                      DrawerHeader(child: Text("Lira", style: TextStyle(
-                        color: Colors.white,
-                        fontSize:40 ,
-                        fontWeight: FontWeight.bold,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min, 
+                      children: [
+                        SizedBox(height: 50),
+                        DrawerHeader(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('lib/images/LIRA Logo - Transparent Background No Slogans- cropped.png'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          child: null,
                         ),
-                      )
+                      ],
                     ),
                   ),
 
-                  ListTile(
-                    title: Text('Home'),
-                    leading: Icon(Icons.home),
-                    textColor: Colors.white,
-                    iconColor: Colors.white,
-                    onTap: null,
-                  ),
-                  ListTile(
-                    title: Text('Graphs'),
-                    textColor: Colors.white,
-                    iconColor: Colors.white,
-                    leading: Icon(Icons.analytics_rounded),
-                    onTap: null,
-                  ),
+                  Column(
+                    children: [
+                      SizedBox(height: 10),
+                      ListTile(
+                        title: Text('Home'),
+                        leading: Icon(Icons.home),
+                        textColor: Colors.white,
+                        iconColor: Colors.white,
+                        onTap: null,
+                      ),
 
-                  ListTile(
-                    title: Text('Profile'),
-                    textColor: Colors.white,
-                    iconColor: Colors.white,
-                    leading: Icon(Icons.person_outlined),
-                    onTap: null,
-                  ),
+                      SizedBox(height: 10),
+                      ListTile(
+                        title: Text('Month'),
+                        textColor: Colors.white,
+                        iconColor: Colors.white,
+                        leading: Icon(Icons.calendar_view_month_rounded),
+                        onTap: null,
+                      ),
 
-                  ListTile(
-                    title: Text('Settings'),
-                    textColor: Colors.white,
-                    iconColor: Colors.white,
-                    leading: Icon(Icons.settings),
-                    onTap: null,
-                  ),
-                ],
-              )
-            ),
+                      SizedBox(height: 10),
+                      ListTile(
+                        title: Text('Graphs'),
+                        textColor: Colors.white,
+                        iconColor: Colors.white,
+                        leading: Icon(Icons.analytics_rounded),
+                        onTap: null,
+                      ),
+                      
+                      SizedBox(height: 10),
+                      ListTile(
+                        title: Text('Profile'),
+                        textColor: Colors.white,
+                        iconColor: Colors.white,
+                        leading: Icon(Icons.person_outlined),
+                        onTap: null,
+                      ),
+
+                      SizedBox(height: 10),
+                      ListTile(
+                        title: Text('Settings'),
+                        textColor: Colors.white,
+                        iconColor: Colors.white,
+                        leading: Icon(Icons.settings),
+                        onTap: null,
+                      ),
+                    ],
+                )
+              ]
+            )
+          ),
           
           //input boxes
           body: Center(
@@ -85,7 +112,7 @@ class Home extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 75),
+                  SizedBox(height: 50),
                   Text('Amount', style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -141,14 +168,27 @@ class Home extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ),
-                      
-                      //add like a pourcentage bar to see how much
-                      //money you have spent in the day in accordance to
-                      //how much u specified u wanted to use
-
+                      ),     
                     ],
                   ),
+
+                  SizedBox(height: 100),
+                  Text(
+                    'Daily Progress', 
+                    style: TextStyle(
+                      color: Colors.white, 
+                      fontSize: 20
+                    )
+                  ),
+                  LinearPercentIndicator(
+                        width: 350.0,
+                        percent: 1.0,
+                        lineHeight: 30,
+                        center: Text("100%", style: TextStyle(color: Colors.white)),
+                        backgroundColor: Color.fromARGB(255, 29, 88, 56),
+                        progressColor: Colors.red[900],
+                        barRadius: Radius.circular(15),
+                  )
                 ],
               ),
             ),
@@ -167,13 +207,13 @@ class Home extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_rounded),
-            label: 'Month',
+            label: 'Day',
           ),
         ],
         unselectedIconTheme: IconThemeData(color: Color.fromARGB(255, 173, 173, 173)),
         selectedIconTheme: IconThemeData(color: Colors.white),
         selectedLabelStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-        unselectedLabelStyle: TextStyle(color: Color.fromARGB(255, 173, 173, 173),fontWeight: FontWeight.normal),
+        unselectedLabelStyle: TextStyle(color: Color.fromARGB(255, 173, 173, 173),),
       ),
     )
   );
