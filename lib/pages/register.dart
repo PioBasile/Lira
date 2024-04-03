@@ -14,10 +14,18 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+  final TextEditingController maximumdayController = TextEditingController();
+  final TextEditingController bankamountController = TextEditingController();
 
-  void signup() {
+
+  void _goToHome() {
     //add authentication here
     Navigator.pushNamed(context, '/home');
+  }
+
+  void _goToLogin() {
+    Navigator.pushNamed(context, '/login');
   }
 
   @override
@@ -30,31 +38,26 @@ class _RegisterState extends State<Register> {
           child: SizedBox(
             width: 350,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                //logo
-                Image.asset(
-                  'lib/images/LIRA Logo - Original with Transparent Background - cropped.png',
-                  width: 350,
-                  height: 350,
-                ),
-
+                const SizedBox(height: 80),
                 //input boxes
                 const Text(
-                  "Login",
+                  "Register",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
-                const SizedBox(height: 0),
+                const SizedBox(height: 20),
                 InputBox(
                     controller: usernameController,
                     hintText: 'username',
                     obscureText: false,
                     obligatory: true),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 20),
                 InputBox(
                     controller: passwordController,
                     hintText: 'password',
@@ -62,11 +65,32 @@ class _RegisterState extends State<Register> {
                     obligatory: true),
 
                 const SizedBox(height: 20),
+                InputBox(
+                    controller: bankamountController,
+                    hintText: 'money in your bank',
+                    obscureText: false,
+                    obligatory: true),
+                  
+                const SizedBox(height: 20),
+                InputBox(
+                    controller: maximumdayController,
+                    hintText: 'maximumum spending per day',
+                    obscureText: false,
+                    obligatory: true),
+
+                const SizedBox(height: 20),
+                InputBox(
+                    controller: categoryController,
+                    hintText: 'categories',
+                    obscureText: false,
+                    obligatory: true),
+
+                const SizedBox(height: 20),
                 Center(
                   child: ButtonBox(
-                    text: 'Login',
+                    text: 'Register',
                     onTap: () {
-                      signup();
+                      _goToHome();
                     },
                   ),
                 ),
@@ -76,24 +100,44 @@ class _RegisterState extends State<Register> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Don't have an account? ",
+                      const Text("Already have an account? ",
                           style: TextStyle(
                             color: Color.fromARGB(255, 130, 118, 118),
                             fontSize: 15,
                           )),
                       GestureDetector(
-                        onTap: widget.onTap,
+                        onTap: _goToLogin,
                         child: const Text(
-                          'Register now',
+                          'Log in now',
                           style: TextStyle(
                               color: Color.fromARGB(255, 206, 201, 201),
                               fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
+              const SizedBox(height: 30),
+                const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Color.fromARGB(255, 150, 40, 40), 
+                      size: 16, 
+                    ),
+                    SizedBox(width: 4), 
+                    Text(
+                      'Please note that your information are encrypted and stored securely.',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 114, 103, 103),
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

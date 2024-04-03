@@ -15,6 +15,10 @@ class _LoginState extends State<Login> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  void _goToRegister() {
+    Navigator.pushNamed(context, '/register');
+  }
+
   void login() {
     //add authentication here
     Navigator.pushNamed(context, '/home');
@@ -49,17 +53,19 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 0),
                 InputBox(
-                    controller: usernameController,
-                    hintText: 'username',
-                    obscureText: false,
-                    obligatory: true),
+                  controller: usernameController,
+                  hintText: 'username',
+                  obscureText: false,
+                  obligatory: true
+                ),
 
                 const SizedBox(height: 25),
                 InputBox(
-                    controller: passwordController,
-                    hintText: 'password',
-                    obscureText: true,
-                    obligatory: true),
+                  controller: passwordController,
+                  hintText: 'password',
+                  obscureText: true,
+                  obligatory: true
+                ),
 
                 const SizedBox(height: 20),
                 Center(
@@ -82,7 +88,7 @@ class _LoginState extends State<Login> {
                             fontSize: 15,
                           )),
                       GestureDetector(
-                        onTap: widget.onTap,
+                        onTap: _goToRegister,
                         child: const Text(
                           'Register now',
                           style: TextStyle(

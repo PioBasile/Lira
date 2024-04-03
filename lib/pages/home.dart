@@ -1,9 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:test/pages/addpage.dart';
 import 'package:test/pages/daypage.dart';
-
 
 class Home extends StatefulWidget {
     
@@ -18,6 +15,10 @@ class _HomeState extends State<Home> {
     AddPage(),
     const DayPage(),
   ];
+
+  void _goToCalendar() {
+    Navigator.pushNamed(context, '/calendar');
+  }
 
   int _pageindex = 0;
 
@@ -34,7 +35,7 @@ class _HomeState extends State<Home> {
         home: Scaffold(
           appBar: AppBar(
             title: const Text('Home', style: TextStyle(
-              color: Colors.white, // Change the color to blue.
+              color: Colors.white,
               ),
             ),
             backgroundColor: const Color.fromARGB(255, 18, 18, 18),
@@ -45,12 +46,12 @@ class _HomeState extends State<Home> {
           body: _pages[_pageindex],
 
           backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-          drawer: const Drawer(
-              backgroundColor: Color.fromARGB(255, 54, 53, 53),
+          drawer: Drawer(
+              backgroundColor: const Color.fromARGB(255, 54, 53, 53),
               child: Column(
                 children: [
                   
-                  Center(
+                  const Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min, 
                       children: [
@@ -70,8 +71,8 @@ class _HomeState extends State<Home> {
 
                   Column(
                     children: [
-                      SizedBox(height: 10),
-                      ListTile(
+                      const SizedBox(height: 10),
+                      const ListTile(
                         title: Text('Home'),
                         leading: Icon(Icons.home),
                         textColor: Colors.white,
@@ -79,17 +80,17 @@ class _HomeState extends State<Home> {
                         onTap: null,
                       ),
 
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       ListTile(
-                        title: Text('Calendar'),
+                        title: const Text('Calendar'),
                         textColor: Colors.white,
                         iconColor: Colors.white,
-                        leading: Icon(Icons.calendar_view_month_rounded),
-                        onTap: null,
+                        leading: const Icon(Icons.calendar_view_month_rounded),
+                        onTap: _goToCalendar,
                       ),
 
-                      SizedBox(height: 10),
-                      ListTile(
+                      const SizedBox(height: 10),
+                      const ListTile(
                         title: Text('Graphs'),
                         textColor: Colors.white,
                         iconColor: Colors.white,
@@ -97,8 +98,8 @@ class _HomeState extends State<Home> {
                         onTap: null,
                       ),
                       
-                      SizedBox(height: 10),
-                      ListTile(
+                      const SizedBox(height: 10),
+                      const ListTile(
                         title: Text('Profile'),
                         textColor: Colors.white,
                         iconColor: Colors.white,
@@ -106,8 +107,8 @@ class _HomeState extends State<Home> {
                         onTap: null,
                       ),
 
-                      SizedBox(height: 10),
-                      ListTile(
+                      const SizedBox(height: 10),
+                      const ListTile(
                         title: Text('Settings'),
                         textColor: Colors.white,
                         iconColor: Colors.white,

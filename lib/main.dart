@@ -5,6 +5,7 @@ import 'package:test/pages/register.dart';
 import 'package:test/pages/home.dart';
 import 'package:test/pages/login.dart';
 import 'package:test/pages/addpage.dart';
+import 'package:test/pages/calendar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,10 +29,10 @@ class MyApp extends StatelessWidget {
         '/addpage': (context) => AddPage(),
         '/login': (context) => Login(
             onTap: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/register');
             }
         ),
-            
+        '/calendar': (context) => Calendar(),
       },
     );
   }
