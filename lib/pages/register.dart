@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 
 
-class Signup extends StatelessWidget {
+class Register extends StatelessWidget {
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Signup({super.key});
+  Register({super.key});
 
   @override
   Widget build(BuildContext context) {

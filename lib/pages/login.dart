@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:test/components/inputbox.dart';
 import 'package:test/components/buttonbox.dart';
 
-class Login extends StatelessWidget {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class Login extends StatefulWidget {
+  final void Function() onTap;
 
-  Login({super.key});
+  const Login({super.key, required this.onTap});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final TextEditingController usernameController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +81,7 @@ class Login extends StatelessWidget {
                         )
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: widget.onTap,
                         child: const Text(
                         'Register now',
                           style: TextStyle(

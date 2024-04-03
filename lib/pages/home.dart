@@ -1,19 +1,31 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:test/components/inputbox.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:test/pages/addpage.dart';
+import 'package:test/pages/daypage.dart';
 
-class Home extends StatelessWidget {
-  
-  final TextEditingController amountController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController timeController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
 
-  
-  Home({super.key});
+class Home extends StatefulWidget {
+    
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final List _pages = [
+    AddPage(),
+    DayPage(),
+  ];
+
+  int _pageindex = 0;
+
+  void _changePageIndex(int index) {
+    setState(() {
+      _pageindex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +41,9 @@ class Home extends StatelessWidget {
             elevation: 0,
             iconTheme: const IconThemeData(color: Colors.white),
           ),
+
+          body: _pages[_pageindex],
+
           backgroundColor: const Color.fromARGB(255, 18, 18, 18),
           drawer: Drawer(
               backgroundColor: const Color.fromARGB(255, 64, 64, 64),
@@ -104,101 +119,10 @@ class Home extends StatelessWidget {
               ]
             )
           ),
-          
-          //input boxes
-          body: Center(
-            child: SizedBox(
-              width: 350,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 50),
-                  Text('Amount', style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  )),
-                  InputBox(
-                    controller: amountController,
-                    hintText: '...',
-                    obscureText: false,
-                    obligatory: true,
-                  ),
-
-
-                  SizedBox(height: 40),
-                  Text('Description', style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  )),
-                  InputBox(
-                    controller: descriptionController,
-                    hintText: 'Optional but recommended',
-                    obscureText: false,
-                    obligatory: false,
-                  ),
-
-                  SizedBox(height: 40),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Date', style: TextStyle(color: Colors.white, fontSize: 20)),
-                            InputBox(
-                              controller: dateController,
-                              hintText: 'Day/Month/Year',
-                              obscureText: false,
-                              obligatory: true,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 20), 
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Time', style: TextStyle(color: Colors.white, fontSize: 20)),
-                            InputBox(
-                              controller: timeController,
-                              hintText: 'Hour:Minute',
-                              obscureText: false,
-                              obligatory: true,
-                            ),
-                          ],
-                        ),
-                      ),     
-                    ],
-                  ),
-
-                  SizedBox(height: 100),
-                  Text(
-                    'Daily Progress', 
-                    style: TextStyle(
-                      color: Colors.white, 
-                      fontSize: 20
-                    )
-                  ),
-                  LinearPercentIndicator(
-                        width: 350.0,
-                        percent: 1.0,
-                        lineHeight: 30,
-                        center: Text("100%", style: TextStyle(color: Colors.white)),
-                        backgroundColor: Color.fromARGB(255, 29, 88, 56),
-                        progressColor: Colors.red[900],
-                        barRadius: Radius.circular(15),
-                  )
-                ],
-              ),
-            ),
-          ),
-
-
-          
-          
-
+        
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _pageindex,
+        onTap: _changePageIndex,
         backgroundColor: const Color.fromARGB(255, 18, 18, 18),
         items: const [
           BottomNavigationBarItem(
