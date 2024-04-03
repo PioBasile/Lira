@@ -13,8 +13,12 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final TextEditingController usernameController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
+
+  void login() {
+    //add authentication here
+    Navigator.pushNamed(context, '/home');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class _LoginState extends State<Login> {
                 //logo
                 Image.asset(
                   'lib/images/LIRA Logo - Original with Transparent Background - cropped.png',
-                  width: 350, 
+                  width: 350,
                   height: 350,
                 ),
 
@@ -55,15 +59,14 @@ class _LoginState extends State<Login> {
                     controller: passwordController,
                     hintText: 'password',
                     obscureText: true,
-                    obligatory: true
-                ),
+                    obligatory: true),
 
                 const SizedBox(height: 20),
                 Center(
-                  child: ButtonBox(text: 
-                    'Login',
+                  child: ButtonBox(
+                    text: 'Login',
                     onTap: () {
-                      Navigator.pushNamed(context, '/home');
+                      login();
                     },
                   ),
                 ),
@@ -73,28 +76,24 @@ class _LoginState extends State<Login> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Don't have an account? ",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 130, 118, 118),
-                          fontSize: 15,
-                        )
-                      ),
+                      const Text("Don't have an account? ",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 130, 118, 118),
+                            fontSize: 15,
+                          )),
                       GestureDetector(
                         onTap: widget.onTap,
                         child: const Text(
-                        'Register now',
+                          'Register now',
                           style: TextStyle(
-                          color: Color.fromARGB(255, 206, 201, 201), fontSize: 15,
-                          fontWeight: FontWeight.bold
-                          ),
+                              color: Color.fromARGB(255, 206, 201, 201),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
                   ),
                 ),
-                
-                
               ],
             ),
           ),

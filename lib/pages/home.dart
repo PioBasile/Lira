@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+
 
 import 'package:flutter/material.dart';
 import 'package:test/pages/addpage.dart';
@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final List _pages = [
     AddPage(),
-    DayPage(),
+    const DayPage(),
   ];
 
   int _pageindex = 0;
@@ -45,9 +45,9 @@ class _HomeState extends State<Home> {
           body: _pages[_pageindex],
 
           backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-          drawer: Drawer(
-              backgroundColor: const Color.fromARGB(255, 64, 64, 64),
-              child: const Column(
+          drawer: const Drawer(
+              backgroundColor: Color.fromARGB(255, 54, 53, 53),
+              child: Column(
                 children: [
                   
                   Center(
@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
 
                       SizedBox(height: 10),
                       ListTile(
-                        title: Text('Month'),
+                        title: Text('Calendar'),
                         textColor: Colors.white,
                         iconColor: Colors.white,
                         leading: Icon(Icons.calendar_view_month_rounded),
@@ -134,10 +134,10 @@ class _HomeState extends State<Home> {
             label: 'Day',
           ),
         ],
-        unselectedIconTheme: IconThemeData(color: Color.fromARGB(255, 173, 173, 173)),
-        selectedIconTheme: IconThemeData(color: Colors.white),
-        selectedLabelStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-        unselectedLabelStyle: TextStyle(color: Color.fromARGB(255, 173, 173, 173),),
+        unselectedIconTheme: const IconThemeData(color: Color.fromARGB(255, 173, 173, 173)),
+        selectedIconTheme: const IconThemeData(color: Colors.white),
+        selectedLabelStyle: const TextStyle(color:  Colors.white,fontWeight: FontWeight.bold),
+        unselectedLabelStyle: const TextStyle(color: Color.fromARGB(255, 173, 173, 173),),
       ),
     )
   );

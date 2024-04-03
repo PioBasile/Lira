@@ -1,29 +1,103 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:test/components/inputbox.dart';
+import 'package:test/components/buttonbox.dart';
 
+class Register extends StatefulWidget {
+  final void Function() onTap;
 
-class Register extends StatelessWidget {
+  const Register({super.key, required this.onTap});
 
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Register({super.key});
+  void signup() {
+    //add authentication here
+    Navigator.pushNamed(context, '/home');
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Signup', style: TextStyle(
-            color: Colors.white,
-            ),),
-          backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-          elevation: 0,
-        ),
-        backgroundColor: const Color.fromARGB(255, 18, 18, 18),
+        backgroundColor: const Color.fromARGB(255, 17, 17, 17),
+        body: Center(
+          child: SizedBox(
+            width: 350,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //logo
+                Image.asset(
+                  'lib/images/LIRA Logo - Original with Transparent Background - cropped.png',
+                  width: 350,
+                  height: 350,
+                ),
 
+                //input boxes
+                const Text(
+                  "Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(height: 0),
+                InputBox(
+                    controller: usernameController,
+                    hintText: 'username',
+                    obscureText: false,
+                    obligatory: true),
+
+                const SizedBox(height: 25),
+                InputBox(
+                    controller: passwordController,
+                    hintText: 'password',
+                    obscureText: true,
+                    obligatory: true),
+
+                const SizedBox(height: 20),
+                Center(
+                  child: ButtonBox(
+                    text: 'Login',
+                    onTap: () {
+                      signup();
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account? ",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 130, 118, 118),
+                            fontSize: 15,
+                          )),
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: const Text(
+                          'Register now',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 206, 201, 201),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

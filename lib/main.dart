@@ -20,7 +20,11 @@ class MyApp extends StatelessWidget {
       home: Login(onTap: () => {}),
       routes: {
         '/home': (context) =>  Home(),
-        '/register': (context) => Register(),
+        '/register': (context) => Register(
+            onTap: () {
+              Navigator.pushNamed(context, '/home');
+            }
+        ),
         '/addpage': (context) => AddPage(),
         '/login': (context) => Login(
             onTap: () {
