@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final List _pages = [
     AddPage(),
-    const DayPage(),
+    DayPage(),
   ];
 
   void _goToCalendar() {
