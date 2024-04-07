@@ -67,7 +67,9 @@ flutter:
       -  lib/images/LIRA Logo - Original - 5000x5000.png
       -  lib/images/LIRA Logo - Original with Transparent Background - 5000x5000.png
       -  lib/images/LIRA Logo - Original with Transparent Background - cropped.png
-      - lib/images/LIRA Logo - Transparent Background No Slogans- cropped.png
+      -  lib/images/LIRA Logo - Transparent Background No Slogans- cropped.png
+      -  lib/images/Lira-Logo-Only.png
+      -  lib/images/Lira-Name-Only.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

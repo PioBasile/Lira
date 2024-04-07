@@ -61,67 +61,75 @@ class _HomeState extends State<Home> {
                       mainAxisSize: MainAxisSize.min, 
                       children: [
                         SizedBox(height: 50),
-                        DrawerHeader(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('lib/images/LIRA Logo - Transparent Background No Slogans- cropped.png'),
+                        Padding(
+                          padding: EdgeInsets.only(top: 25),
+                            child :Image(
+                              image: AssetImage('lib/images/Lira-Name-Only.png'),
                               fit: BoxFit.contain,
                             ),
                           ),
-                          child: null,
+                        SizedBox(height: 5),
+                        Divider(
+                            color: Color.fromARGB(255, 173, 170, 170),
+                            thickness: 2,
+                            indent: 20,
+                            endIndent: 20,
                         ),
                       ],
                     ),
                   ),
 
-                  Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      const ListTile(
-                        title: Text('Home'),
-                        leading: Icon(Icons.home),
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
-                        onTap: null,
-                      ),
-
-                      const SizedBox(height: 10),
-                      ListTile(
-                        title: const Text('Calendar'),
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
-                        leading: const Icon(Icons.calendar_view_month_rounded),
-                        onTap: _goToCalendar,
-                      ),
-
-                      const SizedBox(height: 10),
-                      const ListTile(
-                        title: Text('Graphs'),
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
-                        leading: Icon(Icons.analytics_rounded),
-                        onTap: null,
-                      ),
-                      
-                      const SizedBox(height: 10),
-                      ListTile(
-                        title: const Text('Profile'),
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
-                        leading: const Icon(Icons.person_outlined),
-                        onTap: _goToProfile,
-                      ),
-
-                      const SizedBox(height: 10),
-                      const ListTile(
-                        title: Text('Settings'),
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
-                        leading: Icon(Icons.settings),
-                        onTap: null,
-                      ),
-                    ],
-                )
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        const ListTile(
+                          title: Text('Home'),
+                          leading: Icon(Icons.home),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          onTap: null,
+                        ),
+                    
+                        const SizedBox(height: 10),
+                        ListTile(
+                          title:  const Text('Calendar'),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          leading: const Icon(Icons.calendar_view_month_rounded),
+                          onTap: _goToCalendar,
+                        ),
+                    
+                        const SizedBox(height: 10),
+                        const ListTile(
+                          title: Text('Graphs'),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          leading: Icon(Icons.analytics_rounded),
+                          onTap: null,
+                        ),
+                        
+                        const SizedBox(height: 10),
+                        ListTile(
+                          title: const Text('Profile'),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          leading: const Icon(Icons.person_outlined),
+                          onTap: _goToProfile,
+                        ),
+                    
+                        const SizedBox(height: 10),
+                        const ListTile(
+                          title: Text('Settings'),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          leading: Icon(Icons.settings),
+                          onTap: null,
+                        ),
+                      ],
+                                    ),
+                  )
               ]
             )
           ),

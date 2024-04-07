@@ -28,11 +28,13 @@ class AddPage extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 20,
                   )),
+              
               InputBox(
                 controller: amountController,
                 hintText: '...',
                 obscureText: false,
                 obligatory: true,
+                keyboardType: 'number',
               ),
               const SizedBox(height: 20),
               const Text('Description',
@@ -45,6 +47,7 @@ class AddPage extends StatelessWidget {
                 hintText: 'Optional but recommended',
                 obscureText: false,
                 obligatory: false,
+                keyboardType: 'text',
               ),
               const SizedBox(height: 20),
               Row(
@@ -61,6 +64,7 @@ class AddPage extends StatelessWidget {
                           hintText: 'Day/Month/Year',
                           obscureText: false,
                           obligatory: true,
+                          keyboardType: 'number',
                         ),
                       ],
                     ),
@@ -78,6 +82,7 @@ class AddPage extends StatelessWidget {
                           hintText: 'Hour:Minute',
                           obscureText: false,
                           obligatory: true,
+                          keyboardType: 'number',
                         ),
                       ],
                     ),

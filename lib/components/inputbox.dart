@@ -5,6 +5,7 @@ class InputBox extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final bool obligatory;
+  final String keyboardType;
 
   const InputBox({
     super.key,
@@ -12,6 +13,7 @@ class InputBox extends StatelessWidget {
     required this.hintText,
     required this.obscureText,
     required this.obligatory,
+    this.keyboardType = 'text',
   });
 
   @override
@@ -19,6 +21,9 @@ class InputBox extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      keyboardType: keyboardType == 'text'
+          ? TextInputType.text
+          : const TextInputType.numberWithOptions(decimal: true),
       textAlign: TextAlign.left,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
