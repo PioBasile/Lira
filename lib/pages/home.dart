@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/pages/addpage.dart';
 import 'package:test/pages/daypage.dart';
 
+
 class Home extends StatefulWidget {
     
   const Home({super.key});
@@ -18,6 +19,10 @@ class _HomeState extends State<Home> {
 
   void _goToCalendar() {
     Navigator.pushNamed(context, '/calendar');
+  }
+
+  void _goToProfile() {
+    Navigator.pushNamed(context, '/profile');
   }
 
   int _pageindex = 0;
@@ -99,12 +104,12 @@ class _HomeState extends State<Home> {
                       ),
                       
                       const SizedBox(height: 10),
-                      const ListTile(
-                        title: Text('Profile'),
+                      ListTile(
+                        title: const Text('Profile'),
                         textColor: Colors.white,
                         iconColor: Colors.white,
-                        leading: Icon(Icons.person_outlined),
-                        onTap: null,
+                        leading: const Icon(Icons.person_outlined),
+                        onTap: _goToProfile,
                       ),
 
                       const SizedBox(height: 10),
