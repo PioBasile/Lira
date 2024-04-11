@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:test/components/buttonbox.dart';
 import 'package:test/components/inputbox.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class AddPage extends StatelessWidget {
+class Payed extends StatelessWidget {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
 
-  AddPage({super.key});
+  Payed({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class AddPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               const Text('Amount',
                   style: TextStyle(
                     color: Colors.white,
@@ -101,9 +102,22 @@ class AddPage extends StatelessWidget {
                 obscureText: false,
                 obligatory: true,
               ),
-              const SizedBox(height: 40),
-              const Text('Daily Progress',
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
+
+              const SizedBox(height: 20),
+              
+              Center(
+                child : ButtonBox(
+                text: "Add",
+                onTap: () {},
+                )
+              ),
+
+              const SizedBox(height: 20),
+              const Padding(
+                padding:  EdgeInsets.only(left: 13.0),
+                child:  Text('Daily Progress',
+                    style: TextStyle(color: Colors.white, fontSize: 20)),
+              ),
               LinearPercentIndicator(
                 width: 350.0,
                 percent: 1.0,

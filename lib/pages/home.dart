@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test/pages/addpage.dart';
-import 'package:test/pages/daypage.dart';
+import 'package:test/pages/payed.dart';
+import 'package:test/pages/received.dart';
 
 
 class Home extends StatefulWidget {
@@ -13,9 +13,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List _pages = [
-    AddPage(),
-    DayPage(),
+    Payed(),
+    Received()
   ];
+
+  void _goToGraph() {
+    Navigator.pushNamed(context, '/graph');
+  }
 
   void _goToCalendar() {
     Navigator.pushNamed(context, '/calendar');
@@ -102,12 +106,12 @@ class _HomeState extends State<Home> {
                         ),
                     
                         const SizedBox(height: 10),
-                        const ListTile(
-                          title: Text('Graphs'),
+                         ListTile(
+                          title: const Text('Graphs'),
                           textColor: Colors.white,
                           iconColor: Colors.white,
-                          leading: Icon(Icons.analytics_rounded),
-                          onTap: null,
+                          leading: const Icon(Icons.analytics_rounded),
+                          onTap: _goToGraph,
                         ),
                         
                         const SizedBox(height: 10),
@@ -141,17 +145,18 @@ class _HomeState extends State<Home> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle_outline),
-            label: 'Add',
+            label: 'Payed',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_rounded),
-            label: 'Day',
+            label: 'Received',
           ),
         ],
-        unselectedIconTheme: const IconThemeData(color: Color.fromARGB(255, 173, 173, 173)),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: const Color.fromARGB(255, 134, 132, 132),
+        unselectedIconTheme: const IconThemeData(color: Color.fromARGB(255, 134, 132, 132),),
         selectedIconTheme: const IconThemeData(color: Colors.white),
-        selectedLabelStyle: const TextStyle(color:  Colors.white,fontWeight: FontWeight.bold),
-        unselectedLabelStyle: const TextStyle(color: Color.fromARGB(255, 173, 173, 173),),
+        
       ),
     )
   );

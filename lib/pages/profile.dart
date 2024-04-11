@@ -53,10 +53,10 @@ class _ProfileState extends State<Profile> {
             label: 'Category',
           ),
         ],
-        unselectedIconTheme: const IconThemeData(color: Color.fromARGB(255, 173, 173, 173)),
+        unselectedIconTheme: const IconThemeData(color:  Color.fromARGB(255, 134, 132, 132),),
         selectedIconTheme: const IconThemeData(color: Colors.white),
-        selectedLabelStyle: const TextStyle(color:  Colors.white,fontWeight: FontWeight.bold),
-        unselectedLabelStyle: const TextStyle(color: Color.fromARGB(255, 173, 173, 173),),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: const Color.fromARGB(255, 134, 132, 132),
       ), 
     );
   }

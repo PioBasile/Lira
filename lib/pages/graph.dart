@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-class DayPage extends StatelessWidget {
-  DayPage({super.key});
+class Graph extends StatelessWidget {
+  Graph({super.key});
 
   //can put a list of items for the piechart, and so i can
   //create a list for each day and replace it in the piechart
@@ -27,6 +27,15 @@ class DayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 18, 18, 18),
+        appBar: AppBar(
+          title: const Text('Graph', style: TextStyle(
+            color: Colors.white,
+            ),
+          ),
+          backgroundColor: const Color.fromARGB(255, 18, 18, 18),
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
         body: Center(
           child: PieChart(
             animationDuration: const Duration(milliseconds: 800),
