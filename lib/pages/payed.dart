@@ -82,7 +82,7 @@ class Payed extends StatelessWidget {
                           controller: timeController,
                           hintText: 'Hour:Minute',
                           obscureText: false,
-                          obligatory: true,
+                          obligatory: false,
                           keyboardType: 'number',
                         ),
                       ],

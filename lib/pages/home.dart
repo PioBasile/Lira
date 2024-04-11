@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
                           title:  const Text('Calendar'),
                           textColor: Colors.white,
                           iconColor: Colors.white,
-                          leading: const Icon(Icons.calendar_view_month_rounded),
+                          leading: const Icon(Icons.date_range_rounded),
                           onTap: _goToCalendar,
                         ),
                     
@@ -110,7 +110,7 @@ class _HomeState extends State<Home> {
                           title: const Text('Graphs'),
                           textColor: Colors.white,
                           iconColor: Colors.white,
-                          leading: const Icon(Icons.analytics_rounded),
+                          leading: const Icon(Icons.data_usage_rounded),
                           onTap: _goToGraph,
                         ),
                         
@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
             label: 'Payed',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_rounded),
+            icon: Icon(Icons.add_card_rounded),
             label: 'Received',
           ),
         ],
