@@ -27,19 +27,25 @@ class MyApp extends StatelessWidget {
       home: const AuthGate(),
       routes: {
         '/home': (context) =>  const Home(),
+
         '/register': (context) => Register(
             onTap: () {
               Navigator.pushNamed(context, '/home');
             }
         ),
-        '/addpage': (context) => Payed(),
+
+        '/addpage': (context) => const Payed(),
+
         '/login': (context) => Login(
             onTap: () {
               Navigator.pushNamed(context, '/register');
             }
         ),
+
         '/calendar': (context) => const Calendar(), 
+
         '/profile': (context) => const Profile(),
+        
         '/graph': (context) => Graph(),
       },
     );

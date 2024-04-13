@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List _pages = [
-    Payed(),
+    const Payed(),
     Received()
   ];
 
@@ -54,7 +54,6 @@ class _HomeState extends State<Home> {
               ),
             ),
             backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-            elevation: 0,
             iconTheme: const IconThemeData(color: Colors.white),
           ),
 
