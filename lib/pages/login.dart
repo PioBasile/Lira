@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test/components/inputbox.dart';
 import 'package:test/components/buttonbox.dart';
+import 'package:test/services/auth/auth_service.dart';
 
 class Login extends StatefulWidget {
   final void Function() onTap;
@@ -20,9 +21,20 @@ class _LoginState extends State<Login> {
   }
 
   void login() {
-    //add authentication here
-    Navigator.pushNamed(context, '/home');
-  }
+    // ignore: no_leading_underscores_for_local_identifiers
+    final _authservice = AuthService();
+    
+    try {
+      _authservice.signInWithEmailAndPassword(usernameController.text, passwordController.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+      return;
+    }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +66,7 @@ class _LoginState extends State<Login> {
                 const SizedBox(height: 0),
                 InputBox(
                   controller: usernameController,
-                  hintText: 'username',
+                  hintText: 'email',
                   obscureText: false,
                   obligatory: true
                 ),

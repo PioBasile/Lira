@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "952562712156",
+    "project_id": "lira-app-5eb5e",
+    "storage_bucket": "lira-app-5eb5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952562712156:android:a8884c8ec4b7ded681b099",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4d1-U1B6zuVIfP7Ppl4FFMYYPEk7x2og"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

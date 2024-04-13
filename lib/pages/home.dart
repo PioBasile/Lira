@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test/pages/payed.dart';
 import 'package:test/pages/received.dart';
+import 'package:test/services/auth/auth_service.dart';
 
 
 class Home extends StatefulWidget {
@@ -35,6 +36,11 @@ class _HomeState extends State<Home> {
     setState(() {
       _pageindex = index;
     });
+  }
+
+  void logout(){
+    final authservice = AuthService();
+    authservice.signOut();
   }
 
   @override
@@ -106,7 +112,7 @@ class _HomeState extends State<Home> {
                         ),
                     
                         const SizedBox(height: 10),
-                         ListTile(
+                        ListTile(
                           title: const Text('Graphs'),
                           textColor: Colors.white,
                           iconColor: Colors.white,
@@ -131,6 +137,15 @@ class _HomeState extends State<Home> {
                           leading: Icon(Icons.settings),
                           onTap: null,
                         ),
+                        
+                        const SizedBox(height: 230),
+                        ListTile(
+                          title: const Text('Log Out'),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          leading: const  Icon(Icons.logout),
+                            onTap: logout,
+                        ),
                       ],
                                     ),
                   )
@@ -144,7 +159,7 @@ class _HomeState extends State<Home> {
         backgroundColor: const Color.fromARGB(255, 18, 18, 18),
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
+            icon: Icon(Icons.payment_rounded),
             label: 'Payed',
           ),
           BottomNavigationBarItem(

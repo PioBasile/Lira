@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:test/components/inputbox.dart';
 import 'package:test/components/buttonbox.dart';
+import 'package:test/services/auth/auth_service.dart';
 
 class Register extends StatefulWidget {
-  final void Function() onTap;
+  final void Function()? onTap;
 
   const Register({super.key, required this.onTap});
 
@@ -19,9 +20,77 @@ class _RegisterState extends State<Register> {
   final TextEditingController bankamountController = TextEditingController();
 
 
-  void _goToHome() {
-    //add authentication here
-    Navigator.pushNamed(context, '/home');
+  void register() async {
+    // ignore: no_leading_underscores_for_local_identifiers
+    final _authservice = AuthService();
+
+    //check if password is empty
+    if (passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password cannot be empty'),
+        ),
+      );
+      return;
+    }
+
+    //check if username is empty
+    if (usernameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Username cannot be empty'),
+        ),
+      );
+      return;
+    }
+
+    //check if bankamount is empty
+    if (bankamountController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Bank amount cannot be empty'),
+        ),
+      );
+      return;
+    }
+
+    //check if maximumday is empty
+    if (maximumdayController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Maximum day cannot be empty'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await _authservice.registerWithEmailAndPassword(
+          usernameController.text, passwordController.text);
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, '/home');
+    } 
+    catch (e) {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context, 
+        builder: (context) =>
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(e.toString()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
+
   }
 
   void _goToLogin() {
@@ -53,7 +122,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 20),
                 InputBox(
                     controller: usernameController,
-                    hintText: 'username',
+                    hintText: 'email',
                     obscureText: false,
                     obligatory: true),
 
@@ -69,7 +138,9 @@ class _RegisterState extends State<Register> {
                     controller: bankamountController,
                     hintText: 'money in your bank',
                     obscureText: false,
-                    obligatory: true),
+                    obligatory: true,
+                    keyboardType: "number",
+                ),
                   
                 const SizedBox(height: 20),
                 InputBox(
@@ -83,14 +154,16 @@ class _RegisterState extends State<Register> {
                     controller: categoryController,
                     hintText: 'categories',
                     obscureText: false,
-                    obligatory: true),
+                    obligatory: false,
+                    keyboardType: "number",
+                ),
 
                 const SizedBox(height: 20),
                 Center(
                   child: ButtonBox(
                     text: 'Register',
                     onTap: () {
-                      _goToHome();
+                      register();
                     },
                   ),
                 ),
