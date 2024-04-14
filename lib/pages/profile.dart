@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test/pages/categorypage.dart';
 import 'package:test/pages/infopage.dart';
+import 'package:test/pages/recurring.dart';
 
 class Profile extends StatefulWidget{
   const Profile({super.key});
@@ -20,6 +21,7 @@ class _ProfileState extends State<Profile> {
 
   final List _pages = [
     Info(),
+    const Recurring(),
     const Category(),
   ];
 
@@ -47,6 +49,10 @@ class _ProfileState extends State<Profile> {
           BottomNavigationBarItem(
             icon: Icon(Icons.info_rounded),
             label: 'Info',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.sync),
+            label: 'Reccuring'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.category_rounded),

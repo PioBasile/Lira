@@ -53,7 +53,7 @@ class _PayedState extends State<Payed> {
 
     FireStoreService service = FireStoreService();
     await service.updateOrCreateTransaction(
-        amount, description, dateTime, categories, true);
+        amount, description, dateTime, categories);
 
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
@@ -88,6 +88,7 @@ class _PayedState extends State<Payed> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               const SizedBox(height: 20),
               const Text('Amount',
                   style: TextStyle(color: Colors.white, fontSize: 20)),
@@ -96,7 +97,9 @@ class _PayedState extends State<Payed> {
                   hintText: 'Enter amount',
                   obscureText: false,
                   obligatory: true,
-                  keyboardType: "text"),
+                  keyboardType: "number"
+              ),
+
               const SizedBox(height: 20),
               const Text('Description',
                   style: TextStyle(color: Colors.white, fontSize: 20)),
@@ -105,7 +108,9 @@ class _PayedState extends State<Payed> {
                   hintText: 'Optional but recommended',
                   obscureText: false,
                   obligatory: false,
-                  keyboardType: "text"),
+                  keyboardType: "text"
+              ),
+
               const SizedBox(height: 20),
               Row(
                 children: [
@@ -126,6 +131,7 @@ class _PayedState extends State<Payed> {
                       ],
                     ),
                   ),
+
                   const SizedBox(width: 20),
                   Expanded(
                     child: Column(
@@ -146,6 +152,7 @@ class _PayedState extends State<Payed> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 20),
               ExpansionTile(
               title: const Text('Select Categories', style: TextStyle(color: Colors.white, fontSize: 20)),

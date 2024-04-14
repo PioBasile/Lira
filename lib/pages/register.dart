@@ -15,9 +15,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();
-  final TextEditingController maximumdayController = TextEditingController();
-  final TextEditingController bankamountController = TextEditingController();
+  final TextEditingController password2Controller = TextEditingController();
 
 
   void register() async {
@@ -44,21 +42,11 @@ class _RegisterState extends State<Register> {
       return;
     }
 
-    //check if bankamount is empty
-    if (bankamountController.text.isEmpty) {
+    //check if password and confirm password match
+    if (passwordController.text != password2Controller.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Bank amount cannot be empty'),
-        ),
-      );
-      return;
-    }
-
-    //check if maximumday is empty
-    if (maximumdayController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Maximum day cannot be empty'),
+          content: Text('Passwords do not match'),
         ),
       );
       return;
@@ -68,7 +56,7 @@ class _RegisterState extends State<Register> {
       await _authservice.registerWithEmailAndPassword(
           usernameController.text, passwordController.text);
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushNamed(context, '/firsttime');
     } 
     catch (e) {
       showDialog(
@@ -135,29 +123,15 @@ class _RegisterState extends State<Register> {
 
                 const SizedBox(height: 20),
                 InputBox(
-                    controller: bankamountController,
-                    hintText: 'money in your bank',
-                    obscureText: false,
+                    controller: password2Controller,
+                    hintText: 'confirm password',
+                    obscureText: true,
                     obligatory: true,
-                    keyboardType: "number",
+                    keyboardType: "text",
                 ),
                   
-                const SizedBox(height: 20),
-                InputBox(
-                    controller: maximumdayController,
-                    hintText: 'maximumum spending per day',
-                    obscureText: false,
-                    obligatory: true),
-
-                const SizedBox(height: 20),
-                InputBox(
-                    controller: categoryController,
-                    hintText: 'categories',
-                    obscureText: false,
-                    obligatory: false,
-                    keyboardType: "number",
-                ),
-
+                
+            
                 const SizedBox(height: 20),
                 Center(
                   child: ButtonBox(

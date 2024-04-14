@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:test/components/inputbox.dart';
 import 'package:test/components/buttonbox.dart';
+import 'package:test/services/database/firestore.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
+
 
 
 class Received extends StatelessWidget {
@@ -11,6 +15,31 @@ class Received extends StatelessWidget {
   final TextEditingController personRController = TextEditingController();
 
   Received({super.key});
+
+  void _addReceivedPayment(BuildContext context) async {
+    double amount = double.tryParse(amountRController.text) ?? 0.0;
+
+    String description = descriptionRController.text;
+
+    //String person = personRController.text;
+
+    DateTime date = DateFormat('dd/MM/yyyy').parse(dateRController.text);
+
+    TimeOfDay time = TimeOfDay(
+        hour: int.parse(timeRController.text.split(':')[0]),
+        minute: int.parse(timeRController.text.split(':')[1]));
+
+    DateTime dateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+
+    FireStoreService service = FireStoreService();
+    await service.createReceivedPayment(
+        amount, description, dateTime, personRController.text);
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Received payment successfully')));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +60,7 @@ class Received extends StatelessWidget {
               
               InputBox(
                 controller: amountRController,
-                hintText: '...',
+                hintText: 'Enter amount',
                 obscureText: false,
                 obligatory: true,
                 keyboardType: 'number',
@@ -52,10 +81,11 @@ class Received extends StatelessWidget {
 
               const SizedBox(height: 20),
               const Text('Description',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  )),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                )
+              ),
               InputBox(
                 controller: descriptionRController,
                 hintText: 'Optional but recommended',
@@ -104,11 +134,11 @@ class Received extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Center(
                 child : ButtonBox(
                 text: "Add",
-                onTap: () {},
+                onTap: () => _addReceivedPayment(context),
                 )
               ),
             ],
