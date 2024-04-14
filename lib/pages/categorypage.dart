@@ -1,4 +1,7 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
+import 'package:test/services/database/firestore.dart';
 
 class Category extends StatefulWidget {
   const Category({super.key});
@@ -9,22 +12,41 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
-  final List<String> _categories = [];
+  List<String> _categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadCategories();
+    saveCategories();
+  }
+
+  void loadCategories() async {
+    List<String> categoriesFromDb = await getCategoryFromDb();
+    setState(() {
+      _categories = categoriesFromDb;
+    });
+  }
+
+  void saveCategories() {
+    _saveCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 18, 18),
       body: _categories.isEmpty
-        ? const Center(
-            child: Text('No categories yet.', style: TextStyle(color: Colors.white)),
-          )
-        : ListView.builder(
-            itemCount: _categories.length,
-            itemBuilder: (context, index) {
-              return _categRow(_categories[index], index);
-            },
-          ),
+          ? const Center(
+              child: Text('No categories yet.',
+                  style: TextStyle(color: Colors.white)),
+            )
+          : ListView.builder(
+              itemCount: _categories.length,
+              itemBuilder: (context, index) {
+                return _categRow(_categories[index], index);
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddCategoryDialog,
         // ignore: sort_child_properties_last
@@ -58,6 +80,7 @@ class _CategoryState extends State<Category> {
               child: const Text('Add'),
               onPressed: () {
                 if (_categoryController.text.isNotEmpty) {
+                  saveCategories();
                   setState(() {
                     _categories.add(_categoryController.text);
                     Navigator.of(context).pop();
@@ -76,13 +99,14 @@ class _CategoryState extends State<Category> {
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 76, 75, 75), 
+        color: const Color.fromARGB(255, 76, 75, 75),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(color: Colors.white, fontSize: 20)),
+          Text(title,
+              style: const TextStyle(color: Colors.white, fontSize: 20)),
           IconButton(
             onPressed: () => _removeCategory(index),
             icon: const Icon(Icons.remove, color: Colors.red, size: 30),
@@ -93,8 +117,44 @@ class _CategoryState extends State<Category> {
   }
 
   void _removeCategory(int index) {
+    String categoryToRemove = _categories[index];
     setState(() {
       _categories.removeAt(index);
     });
+
+    FireStoreService fireStoreService = FireStoreService();
+    fireStoreService.removeCategoryFromDb(categoryToRemove).then((success) {
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Category removed successfully."),
+            backgroundColor: Colors.green,
+          )
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Failed to remove category."),
+            backgroundColor: Colors.red,
+          )
+        );
+      }
+    }).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error removing category: $e"),
+          backgroundColor: Colors.red,
+        )
+      );
+    });
+  }
+
+  Future<List<String>> getCategoryFromDb() async {
+    // Simulate a database call
+    return await FireStoreService().getCategoriesFromDB();
+  }
+
+  void _saveCategories() async {
+    await FireStoreService().updateOrCreateCategory(_categories);
   }
 }

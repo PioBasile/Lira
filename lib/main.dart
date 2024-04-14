@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
 
         '/firsttime': (context) => FirstTime(),
 
-        '/recuring': (context) => const Recurring(),
+        '/recuring': (context) =>  const RecurringPaymentsPage(),
       },
     );
   }

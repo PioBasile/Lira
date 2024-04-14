@@ -21,7 +21,7 @@ class _ProfileState extends State<Profile> {
 
   final List _pages = [
     Info(),
-    const Recurring(),
+    const RecurringPaymentsPage(),
     const Category(),
   ];
 
