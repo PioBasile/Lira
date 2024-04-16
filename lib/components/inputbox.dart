@@ -6,6 +6,7 @@ class InputBox extends StatelessWidget {
   final bool obscureText;
   final bool obligatory;
   final String keyboardType;
+  final IconData? prefixIcon;
 
   const InputBox({
     super.key,
@@ -14,6 +15,7 @@ class InputBox extends StatelessWidget {
     required this.obscureText,
     required this.obligatory,
     this.keyboardType = 'text',
+    this.prefixIcon,
   });
 
   @override
@@ -36,7 +38,7 @@ class InputBox extends StatelessWidget {
         ),
         hintText: hintText,
         hintStyle: const TextStyle(color: Color.fromARGB(255, 143, 134, 134)),
-
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         labelText: obligatory ? '$hintText*' : hintText,
       ),
     );

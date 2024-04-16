@@ -12,14 +12,15 @@ import 'package:test/pages/profile.dart';
 import 'package:test/pages/graph.dart';
 import 'package:test/services/auth/auth_gate.dart';
 
+//--------------------To FIX---------------------
+// -  why reccuring and category does not save in db in first time page
 
 /* -------------------- SHIT TO DO ---------------------------------
-- make the profile page more beautiful
+- continue to make calculations.dart
 - make the db work and link it with everything
-- arrange the first time page, idk what to do for category, maybe write a small message
 - add settings page , maybe to delete account or some shit
 - link graph to db
-- on calendar show how much money in total was spent this day + possibility to see description and shit by pressing on day
+- on calendar show how much money in total was spent this day + possibility to see description and shit by pressing on day and per mounth how much u spent
 - link daily progress to how much they said they wanted to max spend per day
 - able to edit their shit on profile page + link it to db , except email
 - maybe add email and password on profile page info
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
         
         '/graph': (context) => Graph(),
 
-        '/firsttime': (context) => FirstTime(),
+        '/firsttime': (context) => const FirstTime(),
 
         '/recuring': (context) =>  const RecurringPaymentsPage(),
       },

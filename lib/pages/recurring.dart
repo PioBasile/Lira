@@ -10,95 +10,70 @@ class RecurringPaymentsPage extends StatefulWidget {
 }
 
 class _RecurringPaymentsPageState extends State<RecurringPaymentsPage> {
-  // ignore: prefer_final_fields
   List<Map<String, dynamic>> _recurringPayments = [];
 
   @override
   void initState() {
     super.initState();
     _loadPayments();
-    _savePayments();
   }
 
   void _loadPayments() async {
-  List<Map<String, dynamic>> paymentsFromDb = await loadPaymentDb();
-  setState(() {
-    _recurringPayments = paymentsFromDb;
-  });
-}
-
-
-  void _savePayments() {
-    _saveRecurringPayments();
+    List<Map<String, dynamic>> paymentsFromDb = await FireStoreService().getRecurringTransactionsFromDB();
+    setState(() {
+      _recurringPayments = paymentsFromDb;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-      body: _recurringPayments.isEmpty
-          ? const Center(
-              child: Text('No recurring payments yet.',
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
-            )
-          : ListView.builder(
-              itemCount: _recurringPayments.length,
-              itemBuilder: (context, index) {
-                return _paymentRow(_recurringPayments[index], index);
-              },
-            ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: _recurringPayments.isEmpty
+            ? const Center(
+                child: Text(
+                  'No recurring payments yet.',
+                  style: TextStyle(color: Colors.white60, fontSize: 16),
+                ),
+              )
+            : ListView.builder(
+                itemCount: _recurringPayments.length,
+                itemBuilder: (context, index) {
+                  return _paymentRow(_recurringPayments[index], index);
+                },
+              ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddPaymentDialog,
         // ignore: sort_child_properties_last
         child: const Icon(Icons.add),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.redAccent, // Bordeaux red as FAB color
       ),
     );
   }
 
   Widget _paymentRow(Map<String, dynamic> payment, int index) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 76, 75, 75),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '\$${payment['amount']}',
-                  style: const TextStyle(color: Colors.white, fontSize: 24),
-                ),
-                Text(
-                  payment['description'],
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                Text(
-                  'Date: ${payment['date']}',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            onPressed: () => _removeRecurringPayment(index),
-            icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
-          ),
-        ],
+    return ListTile(
+      tileColor: const Color.fromARGB(255, 45, 45, 48),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      leading: const Icon(Icons.repeat, color: Colors.green), 
+      title: Text('\$${payment['amount']} - ${payment['description']}', 
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      subtitle: Text('Due on: ${payment['date']}', 
+              style: const TextStyle(color: Colors.white70)),
+      trailing: IconButton(
+        icon: const Icon(Icons.delete, color: Colors.red),
+        onPressed: () => _removeRecurringPayment(index),
       ),
     );
   }
 
   void _showAddPaymentDialog() {
-    TextEditingController dateController = TextEditingController();
     TextEditingController amountController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
+    TextEditingController dateController = TextEditingController();
 
     showDialog(
       context: context,
@@ -110,39 +85,32 @@ class _RecurringPaymentsPageState extends State<RecurringPaymentsPage> {
             children: [
               TextField(
                 controller: amountController,
-                decoration: const InputDecoration(
-                    hintText: "Enter amount (e.g., 123.45)"),
+                decoration: const InputDecoration(hintText: "Enter amount (e.g., 123.45)"),
               ),
               TextField(
                 controller: descriptionController,
-                decoration: const InputDecoration(
-                    hintText: "Enter description (e.g., Rent...)"),
+                decoration: const InputDecoration(hintText: "Enter description (e.g., Rent...)"),
               ),
               TextField(
                 controller: dateController,
-                decoration: const InputDecoration(
-                    hintText: "Enter date (e.g, 3 = 3 of each month)"),
+                decoration: const InputDecoration(hintText: "Enter date (e.g., 3 = 3rd of each month)"),
               ),
             ],
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
               child: const Text('Add'),
               onPressed: () {
-                if (dateController.text.isNotEmpty &&
-                    amountController.text.isNotEmpty &&
-                    descriptionController.text.isNotEmpty) {
-                  _savePayments();
+                if (amountController.text.isNotEmpty && descriptionController.text.isNotEmpty && dateController.text.isNotEmpty) {
                   _addPayment(
-                      double.parse(amountController.text),
-                      descriptionController.text,
-                      int.parse(dateController.text));
+                    double.parse(amountController.text),
+                    descriptionController.text,
+                    dateController.text
+                  );
                   Navigator.of(context).pop();
                 }
               },
@@ -153,48 +121,20 @@ class _RecurringPaymentsPageState extends State<RecurringPaymentsPage> {
     );
   }
 
-  void _addPayment(double amount, String description, int date) {
+  void _addPayment(double amount, String description, String date) {
     setState(() {
-      _recurringPayments.add({
-        'amount': amount,
-        'description': description,
-        'date': date,
-      });
+      _recurringPayments.add({'amount': amount, 'description': description, 'date': date});
     });
-  }
-
-  Future<List<Map<String, dynamic>>> loadPaymentDb() async {
-    return await FireStoreService().getRecurringTransactionsFromDB();  
-  }
-
-  void _saveRecurringPayments() async {
-    await FireStoreService()
-        .updateOrCreateRecurringTransaction(_recurringPayments);
+    FireStoreService().updateOrCreateRecurringTransaction(_recurringPayments);
   }
 
   void _removeRecurringPayment(int index) {
     setState(() {
       _recurringPayments.removeAt(index);
     });
-
-    Map<String, dynamic> recurringToRemove = _recurringPayments[index];
-
-    FireStoreService fireStoreService = FireStoreService();
-    fireStoreService
-        .removeRecurringTransactionFromDb(recurringToRemove)
-        .then((success) {
-      String message = success
-          ? "Recurring payment removed successfully."
-          : "Failed to remove recurring payment.";
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(message),
-        backgroundColor: success ? Colors.green : Colors.red,
-      ));
-    }).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Error removing recurring payment: $e"),
-        backgroundColor: Colors.red,
-      ));
-    });
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Recurring payment removed successfully."),
+      backgroundColor: Colors.green,
+    ));
   }
 }

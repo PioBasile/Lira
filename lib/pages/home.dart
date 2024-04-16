@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final List _pages = [
     const Payed(),
-    Received()
+    const Received()
   ];
 
   void _goToGraph() {
@@ -36,6 +36,10 @@ class _HomeState extends State<Home> {
     setState(() {
       _pageindex = index;
     });
+  }
+
+  void _goToHome() {
+    Navigator.pushNamed(context, '/home');
   }
 
   void logout(){
@@ -93,12 +97,12 @@ class _HomeState extends State<Home> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        const ListTile(
-                          title: Text('Home'),
-                          leading: Icon(Icons.home),
+                        ListTile(
+                          title: const Text('Home'),
+                          leading: const Icon(Icons.home),
                           textColor: Colors.white,
                           iconColor: Colors.white,
-                          onTap: null,
+                          onTap: _goToHome,
                         ),
                     
                         const SizedBox(height: 10),

@@ -10,34 +10,34 @@ class FireStoreService {
 
   //-----------------------PAYMENT/RECEIPT-----------------------
   Future<void> updateOrCreateTransaction(double amount, String description,
-      DateTime timestamp, List<String> categories) async {
+      DateTime timestamp, List<dynamic> categories) async {
     DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
 
     DocumentSnapshot snapshot = await userDoc.get();
 
     if (snapshot.exists) {
       await userDoc.update({
-        'transactions': FieldValue.arrayUnion([
+        'Payments': FieldValue.arrayUnion([
           {
             'amount': amount,
             'description': description,
             'timestamp': timestamp,
             'categories': categories,
-            'type': 'payment'
           }
         ])
       });
     }
   }
 
-  Future<void> createReceivedPayment(double amount, String description, DateTime timestamp, String personneName) async {
+  Future<void> createReceivedPayment(double amount, String description,
+      DateTime timestamp, String personneName) async {
     DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
 
     DocumentSnapshot snapshot = await userDoc.get();
 
     if (snapshot.exists) {
       await userDoc.update({
-        'transactions': FieldValue.arrayUnion([
+        'Received Payments': FieldValue.arrayUnion([
           {
             'amount': amount,
             'description': description,
@@ -49,31 +49,64 @@ class FireStoreService {
       });
     }
   }
-  
+
+  Future<List<Map<String, dynamic>>> getTransactionsFromDB() async {
+    // ignore: no_leading_underscores_for_local_identifiers
+    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+    try {
+      DocumentSnapshot snapshot = await userDoc.get();
+
+      if (snapshot.exists && snapshot.data() != null) {
+        var payments = snapshot.get('Payments');
+        if (payments is List<dynamic>) {
+          return List<Map<String, dynamic>>.from(payments);
+        }
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print("Error getting payments: $e");
+    }
+    return [];
+  }
+
+  Future<List<Map<String, dynamic>>> getReceivedPaymentsFromDB() async {
+    // ignore: no_leading_underscores_for_local_identifiers
+    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+    try {
+      DocumentSnapshot snapshot = await userDoc.get();
+
+      if (snapshot.exists && snapshot.data() != null) {
+        var payments = snapshot.get('Received Payments');
+        if (payments is List<dynamic>) {
+          return List<Map<String, dynamic>>.from(payments);
+        }
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print("Error getting payments: $e");
+    }
+    return [];
+  }
+
   //---------------------- CATEGORY ----------------------
   Future<void> updateOrCreateCategory(List<String> categories) async {
     // ignore: no_leading_underscores_for_local_identifiers
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    var user = FirebaseAuth.instance.currentUser; // Ensuring you have a user instance
+    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+    try {
+      DocumentSnapshot snapshot = await userDoc.get();
 
-    if (user != null) {
-      DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
-
-      try {
-        DocumentSnapshot snapshot = await userDoc.get();
-
-        if (snapshot.exists) {
-          await userDoc
-              .update({'categories': FieldValue.arrayUnion(categories)});
-        } else {
-          // If the document doesn't exist, create it with the categories
-          await userDoc.set({'categories': categories});
-        }
-      } catch (e) {
-        // ignore: avoid_print
-        print("Error updating categories: $e");
+      if (snapshot.exists) {
+        await userDoc
+            .update({'categories': FieldValue.arrayUnion(categories)});
+      } else {
+        await userDoc.set({'categories': categories});
       }
+    } catch (e) {
+      // ignore: avoid_print
+      print("Error updating categories: $e");
     }
+  
   }
 
   //get Categories
@@ -130,14 +163,20 @@ class FireStoreService {
   }
 
   //----------------------Recuring----------------------
-  Future<void> updateOrCreateRecurringTransaction(List<Map<String, dynamic>> transactions) async {
+  Future<void> updateOrCreateRecurringTransaction(
+      List<Map<String, dynamic>> recuringPayments) async {
     DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
 
     DocumentSnapshot snapshot = await userDoc.get();
 
     if (snapshot.exists) {
-      await userDoc.update({
-        'recurringTransactions': FieldValue.arrayUnion(transactions)
+      await userDoc.update(
+          {'recurringTransactions': FieldValue.arrayUnion(recuringPayments)});
+    }
+    else {
+      await userDoc.set({
+        'recurringTransactions': 
+        recuringPayments,
       });
     }
   }
@@ -161,29 +200,78 @@ class FireStoreService {
     return [];
   }
 
-  Future<bool> removeRecurringTransactionFromDb(Map<String, dynamic> recurringTransaction) async {
-  // ignore: no_leading_underscores_for_local_identifiers
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  User? user = FirebaseAuth.instance.currentUser;
+  Future<bool> removeRecurringTransactionFromDb(
+      Map<String, dynamic> recurringTransaction) async {
+    // ignore: no_leading_underscores_for_local_identifiers
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
 
-  if (user == null) {
-    return false;
+    if (user == null) {
+      return false;
+    }
+
+    DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
+    try {
+      DocumentSnapshot snapshot = await userDoc.get();
+
+      if (snapshot.exists) {
+        await userDoc.update({
+          'recurringTransactions':
+              FieldValue.arrayRemove([recurringTransaction])
+        });
+        return true; // Success
+      }
+      return false; // User document does not exist
+    } catch (e) {
+      return false; // Error occurred
+    }
   }
 
-  DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
-  try {
+//-------------------------------INFO------------------------------
+  Future <void> updateOrCreateInfo(double salary, double maxSpendPerDay,double amountBank) async {
+    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+
     DocumentSnapshot snapshot = await userDoc.get();
 
     if (snapshot.exists) {
       await userDoc.update({
-        'recurringTransactions': FieldValue.arrayRemove([recurringTransaction])
+        'salary': salary,
+        'amountBank': amountBank,
+        'maxSpendPerDay': maxSpendPerDay
       });
-      return true; // Success
     }
-    return false; // User document does not exist
-  } catch (e) {
-    return false; // Error occurred
+    await userDoc.set({
+        'Salary&AmountBank&MaxSpend': {
+          'salary': salary, 
+          'amountBank': amountBank,
+          'maxSpendPerDay': maxSpendPerDay,
+        },
+      });
   }
+
+  Future<Map<String, double>> getInfoFromDB() async {
+  Map<String, double> info = {};
+  if (user != null) {
+    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+    try {
+      DocumentSnapshot snapshot = await userDoc.get();
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        if (data.containsKey('Salary&AmountBank&MaxSpend')) {
+          Map financialInfo = data['Salary&AmountBank&MaxSpend'];
+          double amountBank = financialInfo['amountBank']?.toDouble() ?? 0.0;
+          double maxSpendPerDay = financialInfo['maxSpendPerDay']?.toDouble() ?? 0.0;
+          double salary = financialInfo['salary']?.toDouble() ?? 0.0;
+          info['salary'] = salary;
+          info['amountBank'] = amountBank;
+          info['maxSpendPerDay'] = maxSpendPerDay;          
+    }
+    } catch (e) {
+      // ignore: avoid_print
+      print("Error getting financial info: $e");
+    }
+  }
+  return info;
 }
+
 
 }
