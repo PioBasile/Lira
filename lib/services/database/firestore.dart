@@ -182,23 +182,29 @@ class FireStoreService {
   }
 
   Future<List<Map<String, dynamic>>> getRecurringTransactionsFromDB() async {
+    List<Map<String, dynamic>> recurringPaymentsList = [];
     // ignore: no_leading_underscores_for_local_identifiers
-    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
-    try {
-      DocumentSnapshot snapshot = await userDoc.get();
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
 
-      if (snapshot.exists && snapshot.data() != null) {
-        var recurringTransactions = snapshot.get('recurringTransactions');
-        if (recurringTransactions is List<dynamic>) {
-          return List<Map<String, dynamic>>.from(recurringTransactions);
+    if (user != null) {
+      DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
+      try {
+        DocumentSnapshot snapshot = await userDoc.get();
+        if (snapshot.exists) {
+          var data = snapshot.data() as Map<String, dynamic>;
+          if (data.containsKey('recurringTransactions') && data['recurringTransactions'] is List) {
+            recurringPaymentsList = List<Map<String, dynamic>>.from(data['recurringTransactions']);
+          }
         }
+      } catch (e) {
+        // ignore: avoid_print
+        print("Error getting recurring transactions: $e");
       }
-    } catch (e) {
-      // ignore: avoid_print
-      print("Error getting recurring transactions: $e");
     }
-    return [];
+    return recurringPaymentsList;
   }
+
 
   Future<bool> removeRecurringTransactionFromDb(
       Map<String, dynamic> recurringTransaction) async {

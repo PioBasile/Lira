@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:test/services/auth/auth_service.dart';
+import 'package:test/services/calculations/calculations.dart';
 import 'package:test/services/database/firestore.dart'; // For changing status bar color
 
 class Info extends StatefulWidget {
@@ -14,7 +15,8 @@ class Info extends StatefulWidget {
 class _InfoState extends State<Info> {
   final TextEditingController editController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController amountEndOfMounthController = TextEditingController();
+  final TextEditingController amountEndOfMounthController =
+      TextEditingController();
   final TextEditingController amountBankController = TextEditingController();
   final TextEditingController maxSpendingController = TextEditingController();
   final TextEditingController salaryController = TextEditingController();
@@ -28,6 +30,7 @@ class _InfoState extends State<Info> {
     _loadInfo();
     _saveInfo();
     _loadEmailAndPassword();
+    getAEOM();
   }
 
   void _loadEmailAndPassword() async {
@@ -46,12 +49,25 @@ class _InfoState extends State<Info> {
     });
   }
 
+  void getAEOM() async {
+  bool dataLoaded = await loadAllData();
+  if (dataLoaded) {
+    setState(() {
+      amountEndOfMounthController.text = getEOM().toString();
+    });
+  } else {
+    // ignore: avoid_print
+    print("Failed to load data");
+  }
+}
+
+
   void _saveInfo() async {
     double? amountBank = double.tryParse(amountBankController.text);
     double? maxSpendPerDay = double.tryParse(maxSpendingController.text);
     double? salary = double.tryParse(salaryController.text);
 
-    if (salary ==null || amountBank == null || maxSpendPerDay == null) {
+    if (salary == null || amountBank == null || maxSpendPerDay == null) {
       return;
     }
 
@@ -101,8 +117,8 @@ class _InfoState extends State<Info> {
                   _infoDivider(),
                   _infoRow('Max spending/day: ', maxSpendingController.text),
                   _infoDivider(),
-                  _infoRow('Amount in Bank End of Month: ', amountEndOfMounthController.text),
-
+                  _infoRow('Amount in Bank End of Month: ',
+                      amountEndOfMounthController.text),
                 ],
               ),
             ),

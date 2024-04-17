@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test/components/inputbox.dart';
 import 'package:test/components/buttonbox.dart';
+import 'package:test/services/calculations/calculations.dart';
 import 'package:test/services/database/firestore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
@@ -46,6 +47,8 @@ class _ReceivedState extends State<Received> {
 
     FireStoreService service = FireStoreService();
     await service.createReceivedPayment( amount, description, dateTime, person);
+    loadAllData();
+
 
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(

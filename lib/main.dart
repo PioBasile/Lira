@@ -16,7 +16,8 @@ import 'package:test/services/auth/auth_gate.dart';
 // -  why reccuring and category does not save in db in first time page
 
 /* -------------------- SHIT TO DO ---------------------------------
-- continue to make calculations.dart
+- end of month, switch out bank amount end mouth with bank amount
+- substract and add into bank account in relations to the day until end of mounth
 - make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
 - link graph to db
@@ -26,6 +27,7 @@ import 'package:test/services/auth/auth_gate.dart';
 - maybe add email and password on profile page info
 - add credits somewhere
 - add currency maybe , idk if good or no, if yes in setting page
+- page how it works
 
 -------------------AT THE END ------------------
 - change language , setting page

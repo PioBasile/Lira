@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:test/components/buttonbox.dart';
 import 'package:test/components/inputbox.dart';
+import 'package:test/services/calculations/calculations.dart';
 import 'package:test/services/database/firestore.dart';
 
 class Payed extends StatefulWidget {
@@ -21,7 +22,6 @@ class _PayedState extends State<Payed> {
   final TextEditingController categoryController = TextEditingController();
   List<Map<String, dynamic>> _categories = [];
 
-
   void _addPayment(BuildContext context) async {
     double amount = double.tryParse(amountController.text) ?? 0.0;
     String description = descriptionController.text;
@@ -29,9 +29,9 @@ class _PayedState extends State<Payed> {
     TimeOfDay time = TimeOfDay(
         hour: int.parse(timeController.text.split(':')[0]),
         minute: int.parse(timeController.text.split(':')[1]));
-    DateTime dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    DateTime dateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
 
-    // Filtrer les catégories sélectionnées
     List selectedCategories = _categories.where((category) {
       return category['isChecked'] == true;
     }).map((category) {
@@ -39,7 +39,12 @@ class _PayedState extends State<Payed> {
     }).toList();
 
     FireStoreService service = FireStoreService();
-    await service.updateOrCreateTransaction(amount, description, dateTime, selectedCategories);
+    await service.updateOrCreateTransaction(
+        amount, description, dateTime, selectedCategories);
+    bool loaded = await loadAllData();
+    if (loaded) {
+      getEOM();
+    }
 
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
@@ -69,10 +74,9 @@ class _PayedState extends State<Payed> {
     List<String> categoriesFromDb = await getCategory();
     setState(() {
       // Convert List<String> to List<Map<String, dynamic>>
-      _categories = categoriesFromDb.map((category) => {
-        'name': category,
-        'isChecked': false
-      }).toList();
+      _categories = categoriesFromDb
+          .map((category) => {'name': category, 'isChecked': false})
+          .toList();
     });
   }
 
@@ -151,12 +155,15 @@ class _PayedState extends State<Payed> {
                     // ignore: sort_child_properties_last
                     children: [
                       ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 200), // Limit height for scrollable area
+                        constraints: const BoxConstraints(
+                            maxHeight: 200), // Limit height for scrollable area
                         child: SingleChildScrollView(
                           child: Column(
                             children: _categories.map((category) {
                               return CheckboxListTile(
-                                title: Text(category['name'], style: const TextStyle(color: Colors.white)),
+                                title: Text(category['name'],
+                                    style:
+                                        const TextStyle(color: Colors.white)),
                                 checkColor: Colors.black,
                                 activeColor: Colors.white,
                                 value: category['isChecked'],
@@ -175,7 +182,6 @@ class _PayedState extends State<Payed> {
                     iconColor: Colors.white,
                     textColor: Colors.white,
                   ),
-
                   const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   Center(
@@ -203,22 +209,21 @@ class _PayedState extends State<Payed> {
   }
 
   Future<List<String>> getCategory() async {
-    return await FireStoreService().getCategoriesFromDB(); 
+    return await FireStoreService().getCategoriesFromDB();
   }
 
   void _resetFormFields() {
-  amountController.clear();
-  descriptionController.clear();
-  dateController.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
-  timeController.text = DateFormat('HH:mm').format(DateTime.now());
-  setState(() {
-    _categories = _categories.map((category) {
-      return {
-        ...category,
-        'isChecked': false,
-      };
-    }).toList();
-  });
-}
-
+    amountController.clear();
+    descriptionController.clear();
+    dateController.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    timeController.text = DateFormat('HH:mm').format(DateTime.now());
+    setState(() {
+      _categories = _categories.map((category) {
+        return {
+          ...category,
+          'isChecked': false,
+        };
+      }).toList();
+    });
+  }
 }
