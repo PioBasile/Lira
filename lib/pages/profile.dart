@@ -3,7 +3,7 @@ import 'package:test/pages/categorypage.dart';
 import 'package:test/pages/infopage.dart';
 import 'package:test/pages/recurring.dart';
 
-class Profile extends StatefulWidget{
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
@@ -25,22 +25,23 @@ class _ProfileState extends State<Profile> {
     const Category(),
   ];
 
+
   @override
-  Widget build (BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 18, 18),
       appBar: AppBar(
-        title: const Text('Profile', style: TextStyle(
-          color: Colors.white, // Change the color to blue.
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.white, // Change the color to blue.
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 18, 18, 18),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-
       body: _pages[_pageindex],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageindex,
         onTap: _changePageIndex,
@@ -50,20 +51,19 @@ class _ProfileState extends State<Profile> {
             icon: Icon(Icons.info_rounded),
             label: 'Info',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sync),
-            label: 'Reccuring'
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.sync), label: 'Reccuring'),
           BottomNavigationBarItem(
             icon: Icon(Icons.category_rounded),
             label: 'Category',
           ),
         ],
-        unselectedIconTheme: const IconThemeData(color:  Color.fromARGB(255, 134, 132, 132),),
+        unselectedIconTheme: const IconThemeData(
+          color: Color.fromARGB(255, 134, 132, 132),
+        ),
         selectedIconTheme: const IconThemeData(color: Colors.white),
         selectedItemColor: Colors.white,
         unselectedItemColor: const Color.fromARGB(255, 134, 132, 132),
-      ), 
+      ),
     );
   }
 }

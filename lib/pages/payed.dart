@@ -21,37 +21,8 @@ class _PayedState extends State<Payed> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   List<Map<String, dynamic>> _categories = [];
-
-  void _addPayment(BuildContext context) async {
-    double amount = double.tryParse(amountController.text) ?? 0.0;
-    String description = descriptionController.text;
-    DateTime date = DateFormat('dd/MM/yyyy').parse(dateController.text);
-    TimeOfDay time = TimeOfDay(
-        hour: int.parse(timeController.text.split(':')[0]),
-        minute: int.parse(timeController.text.split(':')[1]));
-    DateTime dateTime =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
-
-    List selectedCategories = _categories.where((category) {
-      return category['isChecked'] == true;
-    }).map((category) {
-      return category['name'];
-    }).toList();
-
-    FireStoreService service = FireStoreService();
-    await service.updateOrCreateTransaction(
-        amount, description, dateTime, selectedCategories);
-    bool loaded = await loadAllData();
-    if (loaded) {
-      getEOM();
-    }
-
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Payment added successfully')));
-
-    _resetFormFields();
-  }
+  List<double> spentPerDay = [];
+  double maxSpending = 1;
 
   @override
   void initState() {
@@ -59,6 +30,10 @@ class _PayedState extends State<Payed> {
     dateController.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
     timeController.text = DateFormat('HH:mm').format(DateTime.now());
     loadCategories();
+    double maxSpending = double.parse(getMaxSpendingDay());
+    if (maxSpending == 0) maxSpending = 1;
+    String today = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    spentPerDay = getPaymentsInADay(today);
   }
 
   @override
@@ -67,17 +42,8 @@ class _PayedState extends State<Payed> {
     dateController.dispose();
     timeController.dispose();
     descriptionController.dispose();
+    categoryController.dispose();
     super.dispose();
-  }
-
-  void loadCategories() async {
-    List<String> categoriesFromDb = await getCategory();
-    setState(() {
-      // Convert List<String> to List<Map<String, dynamic>>
-      _categories = categoriesFromDb
-          .map((category) => {'name': category, 'isChecked': false})
-          .toList();
-    });
   }
 
   @override
@@ -195,10 +161,15 @@ class _PayedState extends State<Payed> {
                           style: TextStyle(color: Colors.white, fontSize: 20))),
                   LinearPercentIndicator(
                     width: 350.0,
-                    percent: 1.0,
+                    percent: maxSpending > 0
+                        ? getSpentPerDay() / maxSpending
+                        : 0,
+                    animation: true,
+                    animationDuration: 1000,
                     lineHeight: 30,
-                    center: const Text("100%",
-                        style: TextStyle(color: Colors.white)),
+                    center: Text(
+                        "${((getSpentPerDay() / maxSpending > 0 ? maxSpending : 1) * 100).toStringAsFixed(1)}%",
+                        style: const TextStyle(color: Colors.white)),
                     backgroundColor: const Color.fromARGB(255, 29, 88, 56),
                     progressColor: Colors.red[900],
                     barRadius: const Radius.circular(15),
@@ -206,6 +177,44 @@ class _PayedState extends State<Payed> {
                 ],
               )),
         ));
+  }
+
+  void _addPayment(BuildContext context) async {
+    double amount = double.tryParse(amountController.text) ?? 0.0;
+    String description = descriptionController.text;
+    DateTime date = DateFormat('dd/MM/yyyy').parse(dateController.text);
+    TimeOfDay time = TimeOfDay(
+        hour: int.parse(timeController.text.split(':')[0]),
+        minute: int.parse(timeController.text.split(':')[1]));
+    DateTime dateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+
+    List selectedCategories = _categories.where((category) {
+      return category['isChecked'] == true;
+    }).map((category) {
+      return category['name'];
+    }).toList();
+
+    FireStoreService service = FireStoreService();
+    await service.updateOrCreateTransaction(
+        amount, description, dateTime, selectedCategories);
+    bool loaded = await loadAllData();
+    if (loaded) {
+      getEOM();
+    }
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Payment added successfully')));
+    _resetFormFields();
+  }
+
+  double getSpentPerDay() {
+    double spent = 0;
+    for (int i = 0; i < spentPerDay.length; i++) {
+      spent += spentPerDay[i];
+    }
+    return spent;
   }
 
   Future<List<String>> getCategory() async {
@@ -225,5 +234,21 @@ class _PayedState extends State<Payed> {
         };
       }).toList();
     });
+  }
+
+  void loadCategories() async {
+    List<String> categoriesFromDb = await getCategory();
+    setState(() {
+      // Convert List<String> to List<Map<String, dynamic>>
+      _categories = categoriesFromDb
+          .map((category) => {'name': category, 'isChecked': false})
+          .toList();
+    });
+  }
+
+  String getMaxSpendingDay() {
+    infoAll = getInfo();
+    String maxSpending = infoAll['maxSpendPerDay']?.toString() ?? '0';
+    return maxSpending;
   }
 }

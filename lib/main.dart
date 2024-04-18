@@ -12,8 +12,15 @@ import 'package:test/pages/profile.dart';
 import 'package:test/pages/graph.dart';
 import 'package:test/services/auth/auth_gate.dart';
 
+// ----------------TO Continue--------------------
+//- 
+
+
 //--------------------To FIX---------------------
 // -  why reccuring and category does not save in db in first time page
+// - the need to reload the app to see the changes
+// - fix daily progress in payed page, maybe doesnt work, to test
+// - fix amount bank End of mounth
 
 /* -------------------- SHIT TO DO ---------------------------------
 - end of month, switch out bank amount end mouth with bank amount

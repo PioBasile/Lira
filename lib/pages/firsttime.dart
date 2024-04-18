@@ -106,7 +106,8 @@ class _FirstTimeState extends State<FirstTime> {
               controller: salaryController, 
               hintText:'Enter your salary', 
               obscureText: false, 
-              obligatory: true
+              obligatory: true,
+              keyboardType: "number",
             ),
             const SizedBox(height: 20),
             InputBox(
@@ -222,6 +223,11 @@ class _FirstTimeState extends State<FirstTime> {
   }
 
   void saveInfo() {
+    if(bankAmountController.text.isEmpty || maxSpendingDayController.text.isEmpty || salaryController.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Not all field were filled in'))
+      );
+    }
     double bankAmount = double.parse(bankAmountController.text);
     double maxSpendingDay = double.parse(maxSpendingDayController.text);
     double salary = double.parse(salaryController.text);

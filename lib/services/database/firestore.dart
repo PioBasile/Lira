@@ -256,28 +256,39 @@ class FireStoreService {
   }
 
   Future<Map<String, double>> getInfoFromDB() async {
-  Map<String, double> info = {};
-  if (user != null) {
-    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
-    try {
-      DocumentSnapshot snapshot = await userDoc.get();
-        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        if (data.containsKey('Salary&AmountBank&MaxSpend')) {
-          Map financialInfo = data['Salary&AmountBank&MaxSpend'];
-          double amountBank = financialInfo['amountBank']?.toDouble() ?? 0.0;
-          double maxSpendPerDay = financialInfo['maxSpendPerDay']?.toDouble() ?? 0.0;
-          double salary = financialInfo['salary']?.toDouble() ?? 0.0;
-          info['salary'] = salary;
-          info['amountBank'] = amountBank;
-          info['maxSpendPerDay'] = maxSpendPerDay;          
+    Map<String, double> info = {};
+    if (user != null) {
+      DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+      try {
+        DocumentSnapshot snapshot = await userDoc.get();
+          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+          if (data.containsKey('Salary&AmountBank&MaxSpend')) {
+            Map financialInfo = data['Salary&AmountBank&MaxSpend'];
+            double amountBank = financialInfo['amountBank']?.toDouble() ?? 0.0;
+            double maxSpendPerDay = financialInfo['maxSpendPerDay']?.toDouble() ?? 0.0;
+            double salary = financialInfo['salary']?.toDouble() ?? 0.0;
+            info['salary'] = salary;
+            info['amountBank'] = amountBank;
+            info['maxSpendPerDay'] = maxSpendPerDay;          
+      }
+      } catch (e) {
+        // ignore: avoid_print
+        print("Error getting financial info: $e");
+      }
     }
-    } catch (e) {
-      // ignore: avoid_print
-      print("Error getting financial info: $e");
-    }
+    return info;
   }
-  return info;
-}
+
+  void updateInfo(Map<String, double> info) async {
+    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+    await userDoc.update({
+      'Salary&AmountBank&MaxSpend': {
+        'salary': info['salary'],
+        'amountBank': info['amountBank'],
+        'maxSpendPerDay': info['maxSpendPerDay'],
+      }
+    });
+  }
 
 
 }

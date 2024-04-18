@@ -146,6 +146,16 @@ double getEOM() {
 }
 
 // Calculate each day how much was spent
+List<double> getPaymentsInADay(String day) {
+  List<double> paymentsInADay = [];
+  for (int i = 0; i < paymentsAll.length; i++) {
+    DateTime date = paymentsAll[i]['timestamp'].toDate();
+    if (date.day.toString() == day) {
+      paymentsInADay.add(paymentsAll[i]['amount']);
+    }
+  }
+  return paymentsInADay;
+}
 
 List<Map<int, double>> spentPerDayInMonth(String month) {
   List<Map<int, double>> spentPerDay = [];
@@ -188,6 +198,34 @@ List<Map<int, double>> spentPerDayInMonth(String month) {
           (spentPerDay[day - 1][day] ?? 0) + payment['date'];
     }
   }
-
   return spentPerDay;
+}
+
+//-------------------------------BANK AMOUNT--------------------------------
+double syncBankAmountToDay(String day, String month) {
+  double amountBankDouble = double.parse(amountBank);
+
+  getPaymentsInADay(day).forEach((element) {
+    amountBankDouble -= element;
+  });
+
+  List<Map<String, dynamic>> reccuringPayments = getRecurringPaymentsForMonth();
+  for (var element in reccuringPayments) {
+    DateTime date = element['date'].toDate();
+    if (date.day.toString() == day) {
+      amountBankDouble -= element['amount'];
+    }
+  }
+
+  List<Map<String, dynamic>> receivedPayments =
+      getReceivedPaymentsForMonth(month);
+  for (var element in receivedPayments) {
+    DateTime date = element['timestamp'].toDate();
+    if (date.day.toString() == day) {
+      amountBankDouble += element['amount'];
+    }
+  }
+
+  
+  return amountBankDouble;
 }
