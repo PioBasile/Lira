@@ -28,10 +28,24 @@ class _InfoState extends State<Info> {
   void initState() {
     super.initState();
     _loadInfo();
-    _saveInfo();
     _loadEmailAndPassword();
     getAEOM();
+    //syncAmountBankDay();
+    _saveInfo();
+
   }
+
+  // void syncAmountBankDay(){
+  //   String today = DateTime.now().day.toString();
+
+  //   String month = DateTime.now().month.toString();
+  //   double sync= syncBankAmountToDay(today, month);
+
+  //   // ignore: avoid_print
+  //   print(" syncBankToday = $sync");
+    
+  //   amountBankController.text = sync.toString();
+  // }
 
   void _loadEmailAndPassword() async {
     setState(() {
@@ -46,21 +60,30 @@ class _InfoState extends State<Info> {
       salaryController.text = info['salary']?.toString() ?? '0';
       amountBankController.text = info['amountBank']?.toString() ?? '0';
       maxSpendingController.text = info['maxSpendPerDay']?.toString() ?? '0';
+
+    String today = DateTime.now().day.toString();
+    String month = DateTime.now().month.toString();
+    
+    double sync= syncBankAmountToDay(today, month);
+
+    // ignore: avoid_print
+    print(" syncBankToday = $sync");
+    
+    amountBankController.text = sync.toString();
     });
   }
 
   void getAEOM() async {
-  bool dataLoaded = await loadAllData();
-  if (dataLoaded) {
-    setState(() {
-      amountEndOfMounthController.text = getEOM().toString();
-    });
-  } else {
-    // ignore: avoid_print
-    print("Failed to load data");
+    bool dataLoaded = await loadAllData();
+    if (dataLoaded) {
+      setState(() {
+        amountEndOfMounthController.text = getEOM().toString();
+      });
+    } else {
+      // ignore: avoid_print
+      print("Failed to load data");
+    }
   }
-}
-
 
   void _saveInfo() async {
     double? amountBank = double.tryParse(amountBankController.text);

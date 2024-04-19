@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:test/firebase_options.dart';
 import 'package:test/pages/firsttime.dart';
+import 'package:test/pages/howitworks.dart';
 import 'package:test/pages/recurring.dart';
 import 'package:test/pages/register.dart';
 import 'package:test/pages/home.dart';
@@ -13,14 +14,14 @@ import 'package:test/pages/graph.dart';
 import 'package:test/services/auth/auth_gate.dart';
 
 // ----------------TO Continue--------------------
-//- 
+
 
 
 //--------------------To FIX---------------------
 // -  why reccuring and category does not save in db in first time page
-// - the need to reload the app to see the changes
+// - the need to reload the app to see the changes, work in progress
 // - fix daily progress in payed page, maybe doesnt work, to test
-// - fix amount bank End of mounth
+//- Amount in bank is weird, need to go to another page to see change 
 
 /* -------------------- SHIT TO DO ---------------------------------
 - end of month, switch out bank amount end mouth with bank amount
@@ -83,6 +84,8 @@ class MyApp extends StatelessWidget {
         '/firsttime': (context) => const FirstTime(),
 
         '/recuring': (context) =>  const RecurringPaymentsPage(),
+
+        '/howitworks': (context) => const HowItWorks(),
       },
     );
   }

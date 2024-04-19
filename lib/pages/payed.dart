@@ -247,7 +247,7 @@ class _PayedState extends State<Payed> {
   }
 
   String getMaxSpendingDay() {
-    infoAll = getInfo();
+    Map<String, double> infoAll = getInfo();
     String maxSpending = infoAll['maxSpendPerDay']?.toString() ?? '0';
     return maxSpending;
   }
