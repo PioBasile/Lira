@@ -63,8 +63,9 @@ class _InfoState extends State<Info> {
 
     String today = DateTime.now().day.toString();
     String month = DateTime.now().month.toString();
+    String year = DateTime.now().year.toString();
     
-    double sync= syncBankAmountToDay(today, month);
+    double sync= syncBankAmountToDay(today, month,year);
 
     // ignore: avoid_print
     print(" syncBankToday = $sync");

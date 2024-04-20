@@ -14,7 +14,9 @@ import 'package:test/pages/graph.dart';
 import 'package:test/services/auth/auth_gate.dart';
 
 // ----------------TO Continue--------------------
-
+// How itt works page
+// - Calendarr
+// - How it works
 
 
 //--------------------To FIX---------------------

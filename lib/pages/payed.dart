@@ -33,7 +33,9 @@ class _PayedState extends State<Payed> {
     double maxSpending = double.parse(getMaxSpendingDay());
     if (maxSpending == 0) maxSpending = 1;
     String today = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    spentPerDay = getPaymentsInADay(today);
+    String month = DateFormat('MM').format(DateTime.now());
+    String year = DateFormat('yyyy').format(DateTime.now());
+    spentPerDay = getPaymentsInADay(today, month, year);
   }
 
   @override
