@@ -49,26 +49,37 @@ class _RecurringPaymentsPageState extends State<RecurringPaymentsPage> {
         onPressed: _showAddPaymentDialog,
         // ignore: sort_child_properties_last
         child: const Icon(Icons.add),
-        backgroundColor: Colors.redAccent, // Bordeaux red as FAB color
+        backgroundColor: Colors.redAccent, 
       ),
     );
   }
 
   Widget _paymentRow(Map<String, dynamic> payment, int index) {
-    return ListTile(
-      tileColor: const Color.fromARGB(255, 45, 45, 48),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      leading: const Icon(Icons.repeat, color: Colors.green), 
-      title: Text('\$${payment['amount']} - ${payment['description']}', 
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-      subtitle: Text('Due on: ${payment['date']}', 
-              style: const TextStyle(color: Colors.white70)),
-      trailing: IconButton(
-        icon: const Icon(Icons.delete, color: Colors.red),
-        onPressed: () => _removeRecurringPayment(index),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10), 
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 45, 45, 48),
+        borderRadius: BorderRadius.circular(10), 
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        leading: const Icon(Icons.repeat, color: Colors.green),
+        title: Text(
+          '\$${payment['amount']} - ${payment['description']}', 
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+        ),
+        subtitle: Text(
+          'Due on: ${payment['date']}', 
+          style: const TextStyle(color: Colors.white70)
+        ),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete, color: Colors.red),
+          onPressed: () => _removeRecurringPayment(index),
+        ),
       ),
     );
   }
+
 
   void _showAddPaymentDialog() {
     TextEditingController amountController = TextEditingController();

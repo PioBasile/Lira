@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 // ignore: depend_on_referenced_packages
-import 'package:test/services/calculations/calculations.dart'; // Make sure you have this for date formatting
+import 'package:test/services/calculations/calculations.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -17,7 +17,6 @@ class _CalendarState extends State<Calendar> {
   late double totalReceivedPayments;
   late double totalRecurringPayments;
 
-
   @override
   void initState() {
     super.initState();
@@ -31,10 +30,8 @@ class _CalendarState extends State<Calendar> {
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
-      // Optionally update other state variables or perform network requests here
     });
   }
-
 
   void _updateDayInfo() {
     setState(() {
@@ -46,6 +43,11 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<int, double>> spentDay = _getPaymentsMonth(
+        _selectedDay.day.toString(),
+        _selectedDay.month.toString(),
+        _selectedDay.year.toString());
+    late double amountSpent;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Calendar', style: TextStyle(color: Colors.white)),
@@ -67,7 +69,7 @@ class _CalendarState extends State<Calendar> {
             onDaySelected: _onDaySelected,
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, focusedDay) {
-                const amountSpent = /*dailySpending[day] ??*/ 0.0;
+                amountSpent = spentDay[day.day - 1][day.day]!;
                 return Container(
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
@@ -78,9 +80,12 @@ class _CalendarState extends State<Calendar> {
                         '${day.day}',
                         style: const TextStyle(color: Colors.white),
                       ),
-                      const Text(
-                        '\$$amountSpent',
-                        style: TextStyle(color: Colors.tealAccent, fontSize: 12),
+                      Text(
+                        getTotalReceivedPayments(day) > (getTotalPayments(day) + getTotalRecurringPayments(day)) 
+                          ? "+${getTotalReceivedPayments(day)}" 
+                          : "-${getTotalPayments(day) + getTotalRecurringPayments(day)}",
+                        style: const TextStyle(
+                            color: Colors.tealAccent, fontSize: 12),
                       ),
                     ],
                   ),
@@ -114,15 +119,17 @@ class _CalendarState extends State<Calendar> {
           ),
           const SizedBox(height: 50),
           Expanded(
-            child : Column(
+            child: Column(
               children: [
-                _infoRow('Selected Day', '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}'),
+                _infoRow('Selected Day',
+                    '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}'),
                 _infoDivider(),
                 _infoRow('Total Payments', '\$$totalPayments'),
                 _infoDivider(),
                 _infoRow('Total Received Payments', '\$$totalReceivedPayments'),
                 _infoDivider(),
-                _infoRow('Total Recurring Payments', '\$$totalRecurringPayments'),
+                _infoRow(
+                    'Total Recurring Payments', '\$$totalRecurringPayments'),
               ],
             ),
           ),
@@ -131,12 +138,25 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
+  List<Map<int, double>> _getPaymentsMonth(
+      String day, String month, String year) {
+    // ignore: unused_local_variable
+    Map<int, double> payments = {};
+    List<Map<int, double>> spentperday = [];
+
+    spentperday = spentPerDayInMonth(month, year);
+
+    return spentperday;
+  }
 
   double getTotalPayments(DateTime date) {
     List<double> payments = [];
     double total = 0;
-    payments = getPaymentsInADay(
-        date.day.toString(), date.month.toString(), date.year.toString());
+    String day = date.day.toString().split("/")[0];
+    String month = date.month.toString();
+    String year = date.year.toString();
+
+    payments = getPaymentsInADay(day, month, year);
     for (var payment in payments) {
       total += payment;
     }
@@ -188,15 +208,13 @@ class _CalendarState extends State<Calendar> {
   }
 
   Widget _infoDivider() {
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 8),
-    child: const Divider(
-      height: 1, 
-      thickness: 0.5, 
-      color: Colors.white24, 
-    ),
-  );
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: const Divider(
+        height: 1,
+        thickness: 0.5,
+        color: Colors.white24,
+      ),
+    );
+  }
 }
-
-}
-

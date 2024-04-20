@@ -12,18 +12,16 @@ import 'package:test/pages/calendar.dart';
 import 'package:test/pages/profile.dart';
 import 'package:test/pages/graph.dart';
 import 'package:test/services/auth/auth_gate.dart';
+import 'package:test/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
-// How itt works page
-// - Calendarr
-// - How it works
-
+// - Calendarr cannot go to other mouth without crashing and data is not well displayed
 
 //--------------------To FIX---------------------
 // -  why reccuring and category does not save in db in first time page
 // - the need to reload the app to see the changes, work in progress
 // - fix daily progress in payed page, maybe doesnt work, to test
-//- Amount in bank is weird, need to go to another page to see change 
+//- Amount in bank is weird, need to go to another page to see change
 
 /* -------------------- SHIT TO DO ---------------------------------
 - end of month, switch out bank amount end mouth with bank amount
@@ -34,8 +32,6 @@ import 'package:test/services/auth/auth_gate.dart';
 - on calendar show how much money in total was spent this day + possibility to see description and shit by pressing on day and per mounth how much u spent
 - link daily progress to how much they said they wanted to max spend per day
 - able to edit their shit on profile page + link it to db , except email
-- maybe add email and password on profile page info
-- add credits somewhere
 - add currency maybe , idk if good or no, if yes in setting page
 - page how it works
 
@@ -45,11 +41,12 @@ import 'package:test/services/auth/auth_gate.dart';
 
 */
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  await loadAllData();
   runApp(const MyApp());
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -61,32 +58,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const AuthGate(),
       routes: {
-        '/home': (context) =>  const Home(),
-
-        '/register': (context) => Register(
-            onTap: () {
+        '/home': (context) => const Home(),
+        '/register': (context) => Register(onTap: () {
               Navigator.pushNamed(context, '/home');
-            }
-        ),
-
+            }),
         '/addpage': (context) => const Payed(),
-
-        '/login': (context) => Login(
-            onTap: () {
+        '/login': (context) => Login(onTap: () {
               Navigator.pushNamed(context, '/register');
-            }
-        ),
-
-        '/calendar': (context) => const Calendar(), 
-
+            }),
+        '/calendar': (context) => const Calendar(),
         '/profile': (context) => const Profile(),
-        
         '/graph': (context) => Graph(),
-
         '/firsttime': (context) => const FirstTime(),
-
-        '/recuring': (context) =>  const RecurringPaymentsPage(),
-
+        '/recuring': (context) => const RecurringPaymentsPage(),
         '/howitworks': (context) => const HowItWorks(),
       },
     );

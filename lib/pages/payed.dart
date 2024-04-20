@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
@@ -21,21 +23,15 @@ class _PayedState extends State<Payed> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   List<Map<String, dynamic>> _categories = [];
-  List<double> spentPerDay = [];
-  double maxSpending = 1;
 
   @override
   void initState() {
     super.initState();
+    loadAllData();
     dateController.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
     timeController.text = DateFormat('HH:mm').format(DateTime.now());
     loadCategories();
-    double maxSpending = double.parse(getMaxSpendingDay());
-    if (maxSpending == 0) maxSpending = 1;
-    String today = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    String month = DateFormat('MM').format(DateTime.now());
-    String year = DateFormat('yyyy').format(DateTime.now());
-    spentPerDay = getPaymentsInADay(today, month, year);
+    getTodaySpent();
   }
 
   @override
@@ -50,6 +46,11 @@ class _PayedState extends State<Payed> {
 
   @override
   Widget build(BuildContext context) {
+    double todaySpent = getTodaySpent();
+    double maxSpendingLimit = maxSpending();
+    double percentSpent = todaySpent / maxSpendingLimit.clamp(1, double.infinity); // Avoid division by zero
+
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 18, 18, 18),
         body: Center(
@@ -163,22 +164,46 @@ class _PayedState extends State<Payed> {
                           style: TextStyle(color: Colors.white, fontSize: 20))),
                   LinearPercentIndicator(
                     width: 350.0,
-                    percent: maxSpending > 0
-                        ? getSpentPerDay() / maxSpending
-                        : 0,
+                    percent: percentSpent.clamp(0, 1), // Ensure the percent value doesn't exceed 100%
                     animation: true,
                     animationDuration: 1000,
                     lineHeight: 30,
                     center: Text(
-                        "${((getSpentPerDay() / maxSpending > 0 ? maxSpending : 1) * 100).toStringAsFixed(1)}%",
-                        style: const TextStyle(color: Colors.white)),
-                    backgroundColor: const Color.fromARGB(255, 29, 88, 56),
-                    progressColor: Colors.red[900],
+                      todaySpent > maxSpendingLimit
+                          ? "${(percentSpent * 100).toStringAsFixed(1)}% - Over by \$${(todaySpent - maxSpendingLimit).toStringAsFixed(2)}"
+                          : "${(percentSpent * 100).toStringAsFixed(1)}%",
+                      style: const TextStyle(color: Colors.white)
+                    ),
+                    backgroundColor: const Color.fromARGB(255, 30, 167, 92),
+                    progressColor: todaySpent > maxSpendingLimit ? Colors.red : Colors.deepOrangeAccent, 
                     barRadius: const Radius.circular(15),
                   )
                 ],
               )),
         ));
+  }
+
+  double getTodaySpent() {
+    String today = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    String month = DateFormat('MM').format(DateTime.now());
+    String year = DateFormat('yyyy').format(DateTime.now());
+
+    List<double> spentPerDay = [];
+    spentPerDay = getPaymentsInADay(today, month, year);
+
+    double spentDay = 0;
+    for (int i = 0; i < spentPerDay.length; i++) {
+      spentDay += spentPerDay[i];
+    }
+    print("Spent today: $spentDay");
+    return spentDay;
+  }
+
+  double maxSpending() {
+    Map<String, double> infoAll = getInfo();
+    double maxSpending = infoAll['maxSpendPerDay'] ?? 0;
+    print("Max spending: $maxSpending");
+    return maxSpending;
   }
 
   void _addPayment(BuildContext context) async {
@@ -211,14 +236,6 @@ class _PayedState extends State<Payed> {
     _resetFormFields();
   }
 
-  double getSpentPerDay() {
-    double spent = 0;
-    for (int i = 0; i < spentPerDay.length; i++) {
-      spent += spentPerDay[i];
-    }
-    return spent;
-  }
-
   Future<List<String>> getCategory() async {
     return await FireStoreService().getCategoriesFromDB();
   }
@@ -246,11 +263,5 @@ class _PayedState extends State<Payed> {
           .map((category) => {'name': category, 'isChecked': false})
           .toList();
     });
-  }
-
-  String getMaxSpendingDay() {
-    Map<String, double> infoAll = getInfo();
-    String maxSpending = infoAll['maxSpendPerDay']?.toString() ?? '0';
-    return maxSpending;
   }
 }

@@ -51,10 +51,33 @@ class HowItWorks extends StatelessWidget {
 
                     SizedBox(height: 30,),
                     TextBox(
-                      title: 'How do we stock and manipulate your data?',
-                      text:'' ,
+                      title: 'Privacy and Security',
+                      text:'Everything is stored in a database, so you can access your data from any device. Lira uses Firebase to store your data securely, so you can be sure that your information is safe. We do not share your data with any third parties, and we do not use your data for any other purpose than to help you manage your finances.We cannot see your email or password, so you can be sure that your information is safe and secure.' ,
                       initialFontSize: 18,
-                    )
+                    ),
+
+                    SizedBox(height: 30,),
+                    TextBox(
+                      title: 'Source Code',
+                      text: 'We value your trust so we made the source code of this avaible open and free on GitHub at: github.com/piobasile/lira.',
+                      initialFontSize: 18,
+                    ),
+
+                    SizedBox(height: 30,),
+                    TextBox(
+                      title: 'Credits',
+                      text: 'This app was created by a single student from University of Montpellier, France. It was not a assignement but a personal project. The app was created using Flutter and Firebase. The app is free to use and does not contain any ads. If you have any questions or feedback, you can contact me at: francescopiobasile04@gmail.com. ',
+                      initialFontSize: 18,
+                    ),
+
+                    SizedBox(height: 30,),
+                    TextBox(
+                      title: 'Thank you for using Lira!',
+                      text: 'I hope you find this app useful and that it helps you manage your finances.',
+                      initialFontSize: 18,
+                    ),
+
+                    SizedBox(height: 30,),
                   ],
               ),
             )

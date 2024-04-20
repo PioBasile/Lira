@@ -23,6 +23,7 @@ List<String> months = [
 ];
 DateTime now = DateTime.now();
 String thisMonth = months[now.month - 1];
+String thisYear = now.year.toString();
 
 //get all the variables from the database
 Future<bool> loadAllData() async {
@@ -68,7 +69,7 @@ Map<String, double> getInfo() {
 // String maxSpending = infoAll['maxSpendPerDay']?.toString() ?? '0';
 
 // Get the payments for a specific month
-List<Map<String, dynamic>> getPaymentsForMonth(String month) {
+List<Map<String, dynamic>> getPaymentsForMonth(String month, String year) {
   List<Map<String, dynamic>> paymentsAll = getPayments();
 
   List<Map<String, dynamic>> paymentsForMonth = [];
@@ -82,7 +83,8 @@ List<Map<String, dynamic>> getPaymentsForMonth(String month) {
   return paymentsForMonth;
 }
 
-List<Map<String, dynamic>> getReceivedPaymentsForMonth(String month) {
+List<Map<String, dynamic>> getReceivedPaymentsForMonth(
+    String month, String year) {
   List<Map<String, dynamic>> receivedPaymentsForMonth = [];
   List<Map<String, dynamic>> receivedPaymentsAll = getReceivedPayments();
 
@@ -108,13 +110,14 @@ List<Map<String, dynamic>> getRecurringPaymentsForMonth() {
 }
 
 // Calculate the total amount spent in a month
-double calculateTotalAmount(String month) {
+double calculateTotalAmount(String month, String year) {
   double totalAmount = 0;
   double totalAmountGot = 0;
 
   List<Map<String, dynamic>> recurringPayments = getRecurringPaymentsForMonth();
-  List<Map<String, dynamic>> payments = getPaymentsForMonth(month);
-  List<Map<String, dynamic>> receivedPayments =getReceivedPaymentsForMonth(month);
+  List<Map<String, dynamic>> payments = getPaymentsForMonth(month, year);
+  List<Map<String, dynamic>> receivedPayments =
+      getReceivedPaymentsForMonth(month, year);
 
   for (int i = 0; i < payments.length; i++) {
     totalAmount = payments[i]['amount'] + totalAmount;
@@ -133,8 +136,9 @@ double calculateTotalAmount(String month) {
 }
 
 // Calculate the end of the month amount
-double calculateEOFM(String month, double salary, double amountBank) {
-  double totalAmount = calculateTotalAmount(month);
+double calculateEOFM(
+    String year, String month, double salary, double amountBank) {
+  double totalAmount = calculateTotalAmount(month, year);
   double endOfMonth = salary + amountBank - totalAmount;
   return endOfMonth;
 }
@@ -148,7 +152,7 @@ double getEOM() {
   double amountBank = double.parse(infoAll['amountBank']?.toString() ?? '0');
   print("amountBank : $amountBank");
 
-  double endOfMonth = calculateEOFM(thisMonth, salary, amountBank);
+  double endOfMonth = calculateEOFM(thisYear, thisMonth, salary, amountBank);
   print("end of mounth: $endOfMonth");
   return endOfMonth;
 }
@@ -156,13 +160,22 @@ double getEOM() {
 //-----------------------IN A DAY-----------------------
 
 // Calculate each day how much was spent
-List<double> getPaymentsInADay(String day, String month, String year) {
-  List<Map<String, dynamic>> paymentsAll = getPayments();
+List<double> getPaymentsInADay(String days, String month, String year) {
+  List<Map<String, dynamic>> paymentsAll =
+      getPayments(); // Assuming this fetches all payment data correctly
   List<double> paymentsInADay = [];
-  for (int i = 0; i < paymentsAll.length; i++) {
-    DateTime date = paymentsAll[i]['timestamp'].toDate();
-    if (date.day.toString() == day && months[date.month - 1] == month && date.year.toString() == year) {
-      paymentsInADay.add(paymentsAll[i]['amount']);
+
+  if (days.contains("/")) {
+    days = days.split("/")[0];
+  }
+  int dayInt = int.parse(days);
+  int monthInt = int.parse(month);
+  int yearInt = int.parse(year);
+
+  for (var payment in paymentsAll) {
+    DateTime date = payment['timestamp'].toDate();
+    if (date.day == dayInt && date.month == monthInt && date.year == yearInt) {
+      paymentsInADay.add(payment['amount']);
     }
   }
   return paymentsInADay;
@@ -173,7 +186,9 @@ List<double> getReceivedPaymentsInADay(String day, String month, String year) {
   List<double> receivedPaymentsInADay = [];
   for (int i = 0; i < receivedPaymentsAll.length; i++) {
     DateTime date = receivedPaymentsAll[i]['timestamp'].toDate();
-    if (date.day.toString() == day && months[date.month - 1] == month && date.year.toString() == year) {
+    if (date.day.toString() == day &&
+        months[date.month - 1] == month &&
+        date.year.toString() == year) {
       receivedPaymentsInADay.add(receivedPaymentsAll[i]['amount']);
     }
   }
@@ -192,10 +207,7 @@ List<double> getRecurringPaymentsInADay(String day) {
   return recurringPaymentsInADay;
 }
 
-
-
-List<Map<int, double>> spentPerDayInMonth(String month) {
-
+List<Map<int, double>> spentPerDayInMonth(String month, String year) {
   DateTime now = DateTime.now();
 
   List<Map<int, double>> spentPerDay = [];
@@ -204,8 +216,9 @@ List<Map<int, double>> spentPerDayInMonth(String month) {
     spentPerDay.add({i + 1: 0.0});
   }
 
-  List<Map<String, dynamic>> payments = getPaymentsForMonth(month);
-  List<Map<String, dynamic>> receivedPayments =getReceivedPaymentsForMonth(month);
+  List<Map<String, dynamic>> payments = getPaymentsForMonth(month, year);
+  List<Map<String, dynamic>> receivedPayments =
+      getReceivedPaymentsForMonth(month, year);
   List<Map<String, dynamic>> recurringPayments = getRecurringPaymentsForMonth();
 
   // Process payments
@@ -230,13 +243,16 @@ List<Map<int, double>> spentPerDayInMonth(String month) {
 
   // Process recurring payments
   for (var payment in recurringPayments) {
-    if (payment['date'] != null) {
-      DateTime date = (payment['date'] as Timestamp).toDate();
-      int day = date.day;
-      spentPerDay[day - 1][day] =
-          (spentPerDay[day - 1][day] ?? 1) + payment['date'];
+  if (payment['date'] != null && payment['amount'] != null) {
+    int day = int.tryParse(payment['date'].toString()) ?? 0;
+    double amount = double.tryParse(payment['amount'].toString()) ?? 0.0;
+    
+    if (day >= 1 && day <= 31) {
+      spentPerDay[day - 1][day] = (spentPerDay[day - 1][day] ?? 0.0) + amount;
     }
   }
+}
+  print("spent per day: $spentPerDay");
   return spentPerDay;
 }
 
@@ -247,7 +263,7 @@ double syncBankAmountToDay(String day, String month, String year) {
 
   double amountBankDouble = double.parse(amountBank);
 
-  getPaymentsInADay(day,month,year).forEach((element) {
+  getPaymentsInADay(day, month, year).forEach((element) {
     amountBankDouble -= element;
   });
 
@@ -264,7 +280,7 @@ double syncBankAmountToDay(String day, String month, String year) {
   }
 
   List<Map<String, dynamic>> receivedPayments =
-      getReceivedPaymentsForMonth(month);
+      getReceivedPaymentsForMonth(month, year);
   for (var element in receivedPayments) {
     DateTime date = element['timestamp'].toDate();
     if (date.day.toString() == day) {
