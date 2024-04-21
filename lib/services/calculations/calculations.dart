@@ -182,13 +182,17 @@ List<double> getPaymentsInADay(String days, String month, String year) {
 }
 
 List<double> getReceivedPaymentsInADay(String day, String month, String year) {
+  
   List<Map<String, dynamic>> receivedPaymentsAll = getReceivedPayments();
   List<double> receivedPaymentsInADay = [];
+
+  int dayInt = int.parse(day);
+  int monthInt = int.parse(month);
+  int yearInt = int.parse(year);
+  
   for (int i = 0; i < receivedPaymentsAll.length; i++) {
     DateTime date = receivedPaymentsAll[i]['timestamp'].toDate();
-    if (date.day.toString() == day &&
-        months[date.month - 1] == month &&
-        date.year.toString() == year) {
+    if (date.day == dayInt && date.month == monthInt && date.year == yearInt) {
       receivedPaymentsInADay.add(receivedPaymentsAll[i]['amount']);
     }
   }
@@ -243,15 +247,15 @@ List<Map<int, double>> spentPerDayInMonth(String month, String year) {
 
   // Process recurring payments
   for (var payment in recurringPayments) {
-  if (payment['date'] != null && payment['amount'] != null) {
-    int day = int.tryParse(payment['date'].toString()) ?? 0;
-    double amount = double.tryParse(payment['amount'].toString()) ?? 0.0;
-    
-    if (day >= 1 && day <= 31) {
-      spentPerDay[day - 1][day] = (spentPerDay[day - 1][day] ?? 0.0) + amount;
+    if (payment['date'] != null && payment['amount'] != null) {
+      int day = int.tryParse(payment['date'].toString()) ?? 0;
+      double amount = double.tryParse(payment['amount'].toString()) ?? 0.0;
+
+      if (day >= 1 && day <= 31) {
+        spentPerDay[day - 1][day] = (spentPerDay[day - 1][day] ?? 0.0) + amount;
+      }
     }
   }
-}
   print("spent per day: $spentPerDay");
   return spentPerDay;
 }

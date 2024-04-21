@@ -30,8 +30,10 @@ class _CalendarState extends State<Calendar> {
     setState(() {
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
+      _updateDayInfo();
     });
   }
+
 
   void _updateDayInfo() {
     setState(() {
@@ -43,10 +45,7 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<int, double>> spentDay = _getPaymentsMonth(
-        _selectedDay.day.toString(),
-        _selectedDay.month.toString(),
-        _selectedDay.year.toString());
+    // ignore: unused_local_variable
     late double amountSpent;
     return Scaffold(
       appBar: AppBar(
@@ -69,27 +68,39 @@ class _CalendarState extends State<Calendar> {
             onDaySelected: _onDaySelected,
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, focusedDay) {
-                amountSpent = spentDay[day.day - 1][day.day]!;
+                double totalPayments = getTotalPayments(day);
+                double totalReceived = getTotalReceivedPayments(day);
+                double totalRecurring = getTotalRecurringPayments(day);
+                double netAmount = totalReceived - (totalPayments + totalRecurring);
+
+                Color textColor;
+                if (netAmount > 0) {
+                  textColor = Colors.teal; 
+                } else if (netAmount < 0) {
+                  textColor = Colors.red; 
+                } else {
+                  textColor = Colors.grey; 
+                }
+
+                String displayText = netAmount == 0
+                  ? "0"
+                  : "${netAmount > 0 ? '+' : ''}${netAmount.toStringAsFixed(2)}"; 
+
                 return Container(
                   margin: const EdgeInsets.all(4.0),
                   alignment: Alignment.center,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Text('${day.day}', style: const TextStyle(color: Colors.white)),
                       Text(
-                        '${day.day}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        getTotalReceivedPayments(day) > (getTotalPayments(day) + getTotalRecurringPayments(day)) 
-                          ? "+${getTotalReceivedPayments(day)}" 
-                          : "-${getTotalPayments(day) + getTotalRecurringPayments(day)}",
-                        style: const TextStyle(
-                            color: Colors.tealAccent, fontSize: 12),
+                        displayText,
+                        style: TextStyle(color: textColor, fontSize: 12),
                       ),
                     ],
                   ),
                 );
+
               },
             ),
             calendarStyle: CalendarStyle(
@@ -138,16 +149,7 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  List<Map<int, double>> _getPaymentsMonth(
-      String day, String month, String year) {
-    // ignore: unused_local_variable
-    Map<int, double> payments = {};
-    List<Map<int, double>> spentperday = [];
-
-    spentperday = spentPerDayInMonth(month, year);
-
-    return spentperday;
-  }
+  
 
   double getTotalPayments(DateTime date) {
     List<double> payments = [];

@@ -15,17 +15,12 @@ import 'package:test/services/auth/auth_gate.dart';
 import 'package:test/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
-// - Calendarr cannot go to other mouth without crashing and data is not well displayed
+
 
 //--------------------To FIX---------------------
 // -  why reccuring and category does not save in db in first time page
-// - the need to reload the app to see the changes, work in progress
-// - fix daily progress in payed page, maybe doesnt work, to test
-//- Amount in bank is weird, need to go to another page to see change
 
 /* -------------------- SHIT TO DO ---------------------------------
-- end of month, switch out bank amount end mouth with bank amount
-- substract and add into bank account in relations to the day until end of mounth
 - make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
 - link graph to db
@@ -59,9 +54,7 @@ class MyApp extends StatelessWidget {
       home: const AuthGate(),
       routes: {
         '/home': (context) => const Home(),
-        '/register': (context) => Register(onTap: () {
-              Navigator.pushNamed(context, '/home');
-            }),
+        '/register': (context) =>const Register(),
         '/addpage': (context) => const Payed(),
         '/login': (context) => Login(onTap: () {
               Navigator.pushNamed(context, '/register');

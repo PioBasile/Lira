@@ -30,76 +30,8 @@ class _InfoState extends State<Info> {
     _loadInfo();
     _loadEmailAndPassword();
     getAEOM();
-    //syncAmountBankDay();
     _saveInfo();
-
-  }
-
-  // void syncAmountBankDay(){
-  //   String today = DateTime.now().day.toString();
-
-  //   String month = DateTime.now().month.toString();
-  //   double sync= syncBankAmountToDay(today, month);
-
-  //   // ignore: avoid_print
-  //   print(" syncBankToday = $sync");
-    
-  //   amountBankController.text = sync.toString();
-  // }
-
-  void _loadEmailAndPassword() async {
-    setState(() {
-      emailController.text = user?.email ?? '';
-    });
-  }
-
-  void _loadInfo() async {
-    Map<String, double> infoFromDb = await FireStoreService().getInfoFromDB();
-    setState(() {
-      info = infoFromDb;
-      salaryController.text = info['salary']?.toString() ?? '0';
-      amountBankController.text = info['amountBank']?.toString() ?? '0';
-      maxSpendingController.text = info['maxSpendPerDay']?.toString() ?? '0';
-
-    String today = DateTime.now().day.toString();
-    String month = DateTime.now().month.toString();
-    String year = DateTime.now().year.toString();
-    
-    double sync= syncBankAmountToDay(today, month,year);
-
-    // ignore: avoid_print
-    print(" syncBankToday = $sync");
-    
-    amountBankController.text = sync.toString();
-    });
-  }
-
-  void getAEOM() async {
-    bool dataLoaded = await loadAllData();
-    if (dataLoaded) {
-      setState(() {
-        amountEndOfMounthController.text = getEOM().toString();
-      });
-    } else {
-      // ignore: avoid_print
-      print("Failed to load data");
-    }
-  }
-
-  void _saveInfo() async {
-    double? amountBank = double.tryParse(amountBankController.text);
-    double? maxSpendPerDay = double.tryParse(maxSpendingController.text);
-    double? salary = double.tryParse(salaryController.text);
-
-    if (salary == null || amountBank == null || maxSpendPerDay == null) {
-      return;
-    }
-
-    await FireStoreService().updateOrCreateInfo(
-      salary,
-      maxSpendPerDay,
-      amountBank,
-    );
+    syncAmountInBankWithEOM();
   }
 
   @override
@@ -189,6 +121,77 @@ class _InfoState extends State<Info> {
           ),
         ],
       ),
+    );
+  }
+
+  void syncAmountInBankWithEOM() {
+    //get today
+    String today = DateTime.now().day.toString();
+
+    //get last day in a month
+    int lastDay =
+        DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
+
+    if (today == lastDay.toString()) {
+      if (amountBankController == amountEndOfMounthController) {
+        return;
+      }
+      amountBankController.text = amountEndOfMounthController.text;
+    }
+  }
+
+  void _loadEmailAndPassword() async {
+    setState(() {
+      emailController.text = user?.email ?? '';
+    });
+  }
+
+  void _loadInfo() async {
+    Map<String, double> infoFromDb = await FireStoreService().getInfoFromDB();
+    setState(() {
+      info = infoFromDb;
+      salaryController.text = info['salary']?.toString() ?? '0';
+      amountBankController.text = info['amountBank']?.toString() ?? '0';
+      maxSpendingController.text = info['maxSpendPerDay']?.toString() ?? '0';
+
+      String today = DateTime.now().day.toString();
+      String month = DateTime.now().month.toString();
+      String year = DateTime.now().year.toString();
+
+      double sync = syncBankAmountToDay(today, month, year);
+
+      // ignore: avoid_print
+      print(" syncBankToday = $sync");
+
+      amountBankController.text = sync.toString();
+    });
+  }
+
+  void getAEOM() async {
+    bool dataLoaded = await loadAllData();
+    if (dataLoaded) {
+      setState(() {
+        amountEndOfMounthController.text = getEOM().toString();
+      });
+    } else {
+      // ignore: avoid_print
+      print("Failed to load data");
+    }
+  }
+
+  void _saveInfo() async {
+    double? amountBank = double.tryParse(amountBankController.text);
+    double? maxSpendPerDay = double.tryParse(maxSpendingController.text);
+    double? salary = double.tryParse(salaryController.text);
+
+    if (salary == null || amountBank == null || maxSpendPerDay == null) {
+      return;
+    }
+
+    await FireStoreService().updateOrCreateInfo(
+      salary,
+      maxSpendPerDay,
+      amountBank,
     );
   }
 

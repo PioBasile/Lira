@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:test/services/auth/auth_service.dart';
@@ -63,7 +65,6 @@ class FireStoreService {
         }
       }
     } catch (e) {
-      // ignore: avoid_print
       print("Error getting payments: $e");
     }
     return [];
@@ -82,7 +83,6 @@ class FireStoreService {
         }
       }
     } catch (e) {
-      // ignore: avoid_print
       print("Error getting payments: $e");
     }
     return [];
@@ -103,7 +103,6 @@ class FireStoreService {
         await userDoc.set({'categories': categories});
       }
     } catch (e) {
-      // ignore: avoid_print
       print("Error updating categories: $e");
     }
   
@@ -128,7 +127,6 @@ class FireStoreService {
           }
         }
       } catch (e) {
-        // ignore: avoid_print
         print("Error getting categories: $e");
       }
     }
@@ -198,7 +196,6 @@ class FireStoreService {
           }
         }
       } catch (e) {
-        // ignore: avoid_print
         print("Error getting recurring transactions: $e");
       }
     }
@@ -245,6 +242,7 @@ class FireStoreService {
         'amountBank': amountBank,
         'maxSpendPerDay': maxSpendPerDay
       });
+      print('info updated');
     }
     await userDoc.set({
         'Salary&AmountBank&MaxSpend': {
@@ -252,7 +250,8 @@ class FireStoreService {
           'amountBank': amountBank,
           'maxSpendPerDay': maxSpendPerDay,
         },
-      });
+    });
+    print('info created');
   }
 
   Future<Map<String, double>> getInfoFromDB() async {
@@ -272,23 +271,10 @@ class FireStoreService {
             info['maxSpendPerDay'] = maxSpendPerDay;          
       }
       } catch (e) {
-        // ignore: avoid_print
         print("Error getting financial info: $e");
       }
     }
     return info;
   }
-
-  void updateInfo(Map<String, double> info) async {
-    DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
-    await userDoc.update({
-      'Salary&AmountBank&MaxSpend': {
-        'salary': info['salary'],
-        'amountBank': info['amountBank'],
-        'maxSpendPerDay': info['maxSpendPerDay'],
-      }
-    });
-  }
-
 
 }

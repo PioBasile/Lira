@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:test/components/buttonbox.dart';
 import 'package:test/components/inputbox.dart';
@@ -59,7 +58,7 @@ class _FirstTimeState extends State<FirstTime> {
                 if (amountController.text.isNotEmpty &&
                     descriptionController.text.isNotEmpty &&
                     dateController.text.isNotEmpty) {
-                  _addPayment(double.parse(amountController.text),
+                  _addRecPayment(double.parse(amountController.text),
                       descriptionController.text, dateController.text);
                   Navigator.of(context).pop();
                 }
@@ -210,16 +209,8 @@ class _FirstTimeState extends State<FirstTime> {
     );
   }
 
-  void updateOrCreateCategory(List<String> categories) async {
-    try {
-      await FireStoreService().updateOrCreateCategory(categories);
-      // Optional: Update UI or state post success
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error updating categories: $e");
-      }
-      // Optional: Show user an error message
-    }
+  void updateOrCreateCategory(List<String> categories) {
+    FireStoreService().updateOrCreateCategory(categories);
   }
 
   void saveInfo() {
@@ -231,15 +222,20 @@ class _FirstTimeState extends State<FirstTime> {
     double bankAmount = double.parse(bankAmountController.text);
     double maxSpendingDay = double.parse(maxSpendingDayController.text);
     double salary = double.parse(salaryController.text);
+    
     FireStoreService().updateOrCreateInfo(salary,maxSpendingDay, bankAmount);
   }
 
   //ignore: no_leading_underscores_for_local_identifiers
-  Future<void> _addPayment(double amount, String description, String date) async {
+  void _addRecPayment(double amount, String description, String date) {
+      
     setState(() {
       recurringPayments
           .add({'amount': amount, 'description': description, 'date': date});
     });
-    await FireStoreService().updateOrCreateRecurringTransaction(recurringPayments);
+    
+    FireStoreService().updateOrCreateRecurringTransaction(recurringPayments);
+    // ignore: avoid_print
+    print("recPay : $recurringPayments");
   }
 }
