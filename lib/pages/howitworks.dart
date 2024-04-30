@@ -8,17 +8,17 @@ class HowItWorks extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-      appBar: AppBar(
-        title: const Text(
-          'How it works',
-          style: TextStyle(
-            color: Colors.white, 
+      appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight + 20.0),  // Augmente la hauteur de l'AppBar pour inclure l'espace ajouté
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20.0),  // Ajoute un espace au-dessus de l'AppBar
+              child: AppBar(
+                title: const Text('How it works', style: TextStyle(color: Colors.white)),
+                backgroundColor: const Color.fromARGB(255, 18, 18, 18),
+                iconTheme: const IconThemeData(color: Colors.white),
+              ),
+            ),
           ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
       body: const SingleChildScrollView(
         child: Center(
           child: SizedBox(

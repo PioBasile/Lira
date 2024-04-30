@@ -60,9 +60,9 @@ class _ReceivedState extends State<Received> {
     return AvoidKeyboard(
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-        body: Center(
-          child: SizedBox(
-            width: 350,
+        body: Padding(
+          padding: const EdgeInsets.all(16.0), // Add padding around the content
+          child: SingleChildScrollView( // Makes the view scrollable, which helps with smaller devices or large input forms.
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -112,8 +112,7 @@ class _ReceivedState extends State<Received> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Date',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
+                              style: TextStyle(color: Colors.white, fontSize: 20)),
                           InputBox(
                             controller: dateRController,
                             hintText: 'Day/Month/Year',
@@ -130,8 +129,7 @@ class _ReceivedState extends State<Received> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Time',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
+                              style: TextStyle(color: Colors.white, fontSize: 20)),
                           InputBox(
                             controller: timeRController,
                             hintText: 'Hour:Minute',
@@ -157,4 +155,5 @@ class _ReceivedState extends State<Received> {
       ),
     );
   }
+
 }

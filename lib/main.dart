@@ -24,8 +24,7 @@ import 'package:test/services/calculations/calculations.dart';
 - make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
 - link graph to db
-- on calendar show how much money in total was spent this day + possibility to see description and shit by pressing on day and per mounth how much u spent
-- link daily progress to how much they said they wanted to max spend per day
+- on calendar possibility to see description and shit by pressing on day and per mounth how much u spent
 - able to edit their shit on profile page + link it to db , except email
 - add currency maybe , idk if good or no, if yes in setting page
 - page how it works

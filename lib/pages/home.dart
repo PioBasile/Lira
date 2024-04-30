@@ -6,7 +6,7 @@ import 'package:test/services/auth/auth_service.dart';
 
 class Home extends StatefulWidget {
     
-  const Home({super.key});
+  const Home({super.key}); 
 
   @override
   State<Home> createState() => _HomeState();
@@ -56,14 +56,18 @@ class _HomeState extends State<Home> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Home', style: TextStyle(
-              color: Colors.white,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight + 20.0),  // Augmente la hauteur de l'AppBar pour inclure l'espace ajouté
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20.0),  // Ajoute un espace au-dessus de l'AppBar
+              child: AppBar(
+                title: const Text('Home', style: TextStyle(color: Colors.white)),
+                backgroundColor: const Color.fromARGB(255, 18, 18, 18),
+                iconTheme: const IconThemeData(color: Colors.white),
               ),
             ),
-            backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-            iconTheme: const IconThemeData(color: Colors.white),
           ),
+
 
           body: _pages[_pageindex],
 
