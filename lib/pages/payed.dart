@@ -152,7 +152,7 @@ class _PayedState extends State<Payed> {
                   text: "Add",
                   onTap: () => _addPayment(context),
                 ),
-                const SizedBox(height: 90),
+                const SizedBox(height: 30),
                 const Padding(
                     padding: EdgeInsets.only(left: 13.0),
                     child: Text('Daily Progress',

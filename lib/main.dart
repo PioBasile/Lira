@@ -11,11 +11,12 @@ import 'package:test/pages/payed.dart';
 import 'package:test/pages/calendar.dart';
 import 'package:test/pages/profile.dart';
 import 'package:test/pages/graph.dart';
+import 'package:test/pages/settings.dart';
 import 'package:test/services/auth/auth_gate.dart';
 import 'package:test/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
-
+//- settings page
 
 //--------------------To FIX---------------------
 // -  why reccuring and category does not save in db in first time page
@@ -27,7 +28,6 @@ import 'package:test/services/calculations/calculations.dart';
 - on calendar possibility to see description and shit by pressing on day and per mounth how much u spent
 - able to edit their shit on profile page + link it to db , except email
 - add currency maybe , idk if good or no, if yes in setting page
-- page how it works
 
 -------------------AT THE END ------------------
 - change language , setting page
@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
         '/firsttime': (context) => const FirstTime(),
         '/recuring': (context) => const RecurringPaymentsPage(),
         '/howitworks': (context) => const HowItWorks(),
+        '/settings': (context) => Settings(),
       },
     );
   }

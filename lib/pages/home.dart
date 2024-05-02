@@ -30,6 +30,10 @@ class _HomeState extends State<Home> {
     Navigator.pushNamed(context, '/profile');
   }
 
+  void _goToSettings() {
+    Navigator.pushNamed(context, '/settings');
+  }
+
   int _pageindex = 0;
 
   void _changePageIndex(int index) {
@@ -150,12 +154,12 @@ class _HomeState extends State<Home> {
                         ),
                     
                         const SizedBox(height: 10),
-                        const ListTile(
-                          title: Text('Settings'),
+                        ListTile(
+                          title: const Text('Settings'),
                           textColor: Colors.white,
                           iconColor: Colors.white,
-                          leading: Icon(Icons.settings),
-                          onTap: null,
+                          leading: const Icon(Icons.settings),
+                          onTap: _goToSettings,
                         ),
                         
                         const SizedBox(height: 150),
