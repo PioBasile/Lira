@@ -16,12 +16,14 @@ import 'package:test/services/auth/auth_gate.dart';
 import 'package:test/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
+//START WITH GRAPHHH
 //- settings page
 
 //--------------------To FIX---------------------
-// -  why reccuring and category does not save in db in first time page
+
 
 /* -------------------- SHIT TO DO ---------------------------------
+- add somewehere to show description in calendar
 - make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
 - link graph to db
@@ -53,17 +55,29 @@ class MyApp extends StatelessWidget {
       home: const AuthGate(),
       routes: {
         '/home': (context) => const Home(),
+        
         '/register': (context) =>const Register(),
+        
         '/addpage': (context) => const Payed(),
-        '/login': (context) => Login(onTap: () {
+        
+        '/login': (context) => Login(
+          onTap: () {
               Navigator.pushNamed(context, '/register');
-            }),
+            }
+        ),
+        
         '/calendar': (context) => const Calendar(),
+        
         '/profile': (context) => const Profile(),
+        
         '/graph': (context) => Graph(),
+        
         '/firsttime': (context) => const FirstTime(),
+        
         '/recuring': (context) => const RecurringPaymentsPage(),
+        
         '/howitworks': (context) => const HowItWorks(),
+        
         '/settings': (context) => Settings(),
       },
     );

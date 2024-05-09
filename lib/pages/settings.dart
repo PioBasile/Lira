@@ -29,7 +29,7 @@ class Settings extends StatelessWidget {
             width: 350,
             child: SizedBox(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch, 
                   children: [
                     const SizedBox(height: 50),
                     _infoRow("language", languageController.text),
@@ -37,6 +37,19 @@ class Settings extends StatelessWidget {
                     _infoRow("theme", themeController.text),
                     _infoDivider(),
                     _infoRow("currency", currencyController.text),
+                    Center(
+                      child: ButtonBar(
+                        alignment: MainAxisAlignment.center, 
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Delete Account'),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
               ),
             ),
