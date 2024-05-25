@@ -20,7 +20,7 @@ import 'package:test/services/calculations/calculations.dart';
 //- settings page
 
 //--------------------To FIX---------------------
-
+//calculate one time per month the salary , add something to track it per month and year
 
 /* -------------------- SHIT TO DO ---------------------------------
 - add somewehere to show description in calendar

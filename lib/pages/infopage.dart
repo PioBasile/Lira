@@ -13,16 +13,15 @@ class Info extends StatefulWidget {
 }
 
 class _InfoState extends State<Info> {
-  final TextEditingController editController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController amountEndOfMounthController =
-      TextEditingController();
+  final TextEditingController amountEndOfMonthController = TextEditingController();
   final TextEditingController amountBankController = TextEditingController();
   final TextEditingController maxSpendingController = TextEditingController();
   final TextEditingController salaryController = TextEditingController();
   User? user = AuthService().getCurrentUser();
 
   Map<String, double> info = {};
+  bool isEditing = false;
 
   @override
   void initState() {
@@ -30,7 +29,6 @@ class _InfoState extends State<Info> {
     _loadInfo();
     _loadEmailAndPassword();
     getAEOM();
-    _saveInfo();
     syncAmountInBankWithEOM();
   }
 
@@ -47,7 +45,7 @@ class _InfoState extends State<Info> {
         child: Column(
           children: [
             const Padding(
-              padding: EdgeInsets.only(top: 50, bottom: 30),
+              padding: EdgeInsets.only(top: 50, bottom: 20),
               child: Center(
                 child: Text(
                   "Account Information",
@@ -63,32 +61,37 @@ class _InfoState extends State<Info> {
               margin: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
                 children: [
-                  _infoRow('Email: ', emailController.text),
+                  _infoRow('Email: ', emailController, false),
                   _infoDivider(),
-                  _infoRow('Password: ', '***********'),
+                  _infoRow('Password: ', TextEditingController(text: '***********'), false, readOnly: true),
                   _infoDivider(),
-                  _infoRow('Salary ', salaryController.text),
+                  _infoRow('Salary: ', salaryController, isEditing),
                   _infoDivider(),
-                  _infoRow('Amount in Bank: ', amountBankController.text),
+                  _infoRow('Amount in Bank: ', amountBankController, isEditing),
                   _infoDivider(),
-                  _infoRow('Max spending/day: ', maxSpendingController.text),
+                  _infoRow('Max spending/day: ', maxSpendingController, isEditing),
                   _infoDivider(),
-                  _infoRow('Amount in Bank End of Month: ',
-                      amountEndOfMounthController.text),
+                  _infoRow('Amount in Bank End of Month: ', amountEndOfMonthController, isEditing),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: ElevatedButton.icon(
-                icon: const Icon(Icons.edit, size: 20),
-                label: const Text('Edit Profile'),
-                onPressed: () {},
+                icon: Icon(isEditing ? Icons.save : Icons.edit, size: 20),
+                label: Text(isEditing ? 'Save Profile' : 'Edit Profile'),
+                onPressed: () {
+                  setState(() {
+                    if (isEditing) {
+                      _saveInfo();
+                    }
+                    isEditing = !isEditing;
+                  });
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blueGrey[700], // Text color
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -101,9 +104,9 @@ class _InfoState extends State<Info> {
     );
   }
 
-  Widget _infoRow(String title, String value) {
+  Widget _infoRow(String title, TextEditingController controller, bool isEditing, {bool readOnly = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -114,10 +117,26 @@ class _InfoState extends State<Info> {
                 fontSize: 18,
                 fontWeight: FontWeight.w500),
           ),
-          Text(
-            value,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: TextField(
+                controller: controller,
+                readOnly: !isEditing || readOnly,
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                    color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: isEditing && !readOnly ? Colors.white : Colors.transparent),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: isEditing && !readOnly ? Colors.white : Colors.transparent),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -133,10 +152,10 @@ class _InfoState extends State<Info> {
         DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
 
     if (today == lastDay.toString()) {
-      if (amountBankController == amountEndOfMounthController) {
+      if (amountBankController == amountEndOfMonthController) {
         return;
       }
-      amountBankController.text = amountEndOfMounthController.text;
+      amountBankController.text = amountEndOfMonthController.text;
     }
   }
 
@@ -171,7 +190,7 @@ class _InfoState extends State<Info> {
     bool dataLoaded = await loadAllData();
     if (dataLoaded) {
       setState(() {
-        amountEndOfMounthController.text = getEOM().toString();
+        amountEndOfMonthController.text = getEOM().toString();
       });
     } else {
       // ignore: avoid_print
@@ -197,7 +216,7 @@ class _InfoState extends State<Info> {
 
   Widget _infoDivider() {
     return const Divider(
-      height: 20,
+      height: 12,
       thickness: 0.5,
       color: Colors.white24,
     );

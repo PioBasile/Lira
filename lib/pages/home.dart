@@ -143,15 +143,6 @@ class _HomeState extends State<Home> {
                           leading: const Icon(Icons.person_outlined),
                           onTap: _goToProfile,
                         ),
-
-                        const SizedBox(height: 10),
-                        ListTile(
-                          title: const Text('How it works'),
-                          textColor: Colors.white,
-                          iconColor: Colors.white,
-                          leading: const Icon(Icons.help),
-                          onTap: _goToHowItWorks,
-                        ),
                     
                         const SizedBox(height: 10),
                         ListTile(
@@ -163,6 +154,16 @@ class _HomeState extends State<Home> {
                         ),
                         
                         const SizedBox(height: 150),
+                        
+                        ListTile(
+                          title: const Text('How it works'),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          leading: const Icon(Icons.help),
+                          onTap: _goToHowItWorks,
+                        ),
+                        
+                        const SizedBox(height: 10),
                         ListTile(
                           title: const Text('Log Out'),
                           textColor: Colors.white,
