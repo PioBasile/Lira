@@ -59,14 +59,14 @@ class HowItWorks extends StatelessWidget {
                     SizedBox(height: 30,),
                     TextBox(
                       title: 'Source Code',
-                      text: 'We value your trust so we made the source code of this avaible open and free on GitHub at: github.com/piobasile/lira.',
+                      text: 'We value your trust so we made the source code of this avaible open and free on GitHub',
                       initialFontSize: 18,
                     ),
 
                     SizedBox(height: 30,),
                     TextBox(
                       title: 'Credits',
-                      text: 'This app was created by a single student from University of Montpellier, France. It was not a assignement but a personal project.  ',
+                      text: 'This app is a personal project created by a single student from France.  ',
                       initialFontSize: 18,
                     ),
 
