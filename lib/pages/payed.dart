@@ -221,6 +221,11 @@ class _PayedState extends State<Payed> {
       return category['name'];
     }).toList();
 
+    // Default to "not specified" if no category is selected
+    if (selectedCategories.isEmpty) {
+      selectedCategories.add("not specified");
+    }
+
     FireStoreService service = FireStoreService();
     await service.updateOrCreateTransaction(
         amount, description, dateTime, selectedCategories);

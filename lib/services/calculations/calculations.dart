@@ -83,8 +83,7 @@ List<Map<String, dynamic>> getPaymentsForMonth(String month, String year) {
   return paymentsForMonth;
 }
 
-List<Map<String, dynamic>> getReceivedPaymentsForMonth(
-    String month, String year) {
+List<Map<String, dynamic>> getReceivedPaymentsForMonth(String month, String year) {
   List<Map<String, dynamic>> receivedPaymentsForMonth = [];
   List<Map<String, dynamic>> receivedPaymentsAll = getReceivedPayments();
 
@@ -107,6 +106,28 @@ List<Map<String, dynamic>> getRecurringPaymentsForMonth() {
   }
   print("reccuring payments: $recurringPaymentsForMonth");
   return recurringPaymentsForMonth;
+}
+
+List<Map<int, String>> getCategotoriesPerPaymentPerMonth(String year, String month) {
+  List<Map<int, String>> categoriesPerPaymentPerMonth = [];
+  List<Map<String, dynamic>> payments = getPaymentsForMonth(month, year);
+
+  print("Payments for $month $year: $payments");
+
+  for (int i = 0; i < payments.length; i++) {
+    var categories = payments[i]['categories'];
+    if (categories != null && categories is List && categories.isNotEmpty) {
+      for (var category in categories) {
+        if (category != null && category is String) {
+          categoriesPerPaymentPerMonth.add({i + 1: category});
+        }
+      }
+    }
+    
+  }
+
+  print("Categories per payment per month: $categoriesPerPaymentPerMonth");
+  return categoriesPerPaymentPerMonth;
 }
 
 // Calculate the total amount spent in a month

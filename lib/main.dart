@@ -21,15 +21,15 @@ import 'package:test/services/calculations/calculations.dart';
 
 //--------------------To FIX---------------------
 //calculate one time per month the salary , add something to track it per month and year
+//when i change the max spending per month , the daily progress resets , fix it
 
 /* -------------------- SHIT TO DO ---------------------------------
 - add somewehere to show description in calendar
 - make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
-- link graph to db
 - on calendar possibility to see description and shit by pressing on day and per mounth how much u spent
-- able to edit their shit on profile page + link it to db , except email
 - add currency maybe , idk if good or no, if yes in setting page
+- maybe add more graphs
 
 -------------------AT THE END ------------------
 - change language , setting page
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
         
         '/profile': (context) => const Profile(),
         
-        '/graph': (context) => Graph(),
+        '/graph': (context) => const Graph(),
         
         '/firsttime': (context) => const FirstTime(),
         
