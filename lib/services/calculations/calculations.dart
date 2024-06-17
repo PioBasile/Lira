@@ -318,3 +318,33 @@ double syncBankAmountToDay(String day, String month, String year) {
   print("amount bank today: $amountBankDouble");
   return amountBankDouble;
 }
+
+List<Map<String, dynamic>> getAllInfoForCalendar(int day, String month,String year){
+  List<Map<String, dynamic>> payments = getPaymentsForMonth(month, year);
+  List<Map<String, dynamic>> receivedPayments = getReceivedPaymentsForMonth(month, year);
+  List<Map<String, dynamic>> recurringPayments = getRecurringPaymentsForMonth();
+
+  List<Map<String, dynamic>> allInfo = [];
+
+  for (var payment in payments) {
+    DateTime date = payment['timestamp'].toDate();
+    if (date.day == day) {
+      allInfo.add(payment);
+    }
+  }
+
+  for (var payment in receivedPayments) {
+    DateTime date = payment['timestamp'].toDate();
+    if (date.day == day) {
+      allInfo.add(payment);
+    }
+  }
+
+  for (var payment in recurringPayments) {
+    if (payment['date'] == day.toString()) {
+      allInfo.add(payment);
+    }
+  }
+
+  return allInfo;
+}

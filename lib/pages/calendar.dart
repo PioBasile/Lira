@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 // ignore: depend_on_referenced_packages
@@ -34,7 +36,6 @@ class _CalendarState extends State<Calendar> {
     });
   }
 
-
   void _updateDayInfo() {
     setState(() {
       totalPayments = getTotalPayments(_selectedDay);
@@ -45,20 +46,18 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    late double amountSpent;
     return Scaffold(
       appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(kToolbarHeight + 20.0),  // Augmente la hauteur de l'AppBar pour inclure l'espace ajouté
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20.0),  // Ajoute un espace au-dessus de l'AppBar
-              child: AppBar(
-                title: const Text('Calendar', style: TextStyle(color: Colors.white)),
-                backgroundColor: const Color.fromARGB(255, 18, 18, 18),
-                iconTheme: const IconThemeData(color: Colors.white),
-              ),
-            ),
+        preferredSize: const Size.fromHeight(kToolbarHeight + 20.0),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: AppBar(
+            title: const Text('Calendar', style: TextStyle(color: Colors.white)),
+            backgroundColor: const Color.fromARGB(255, 18, 18, 18),
+            iconTheme: const IconThemeData(color: Colors.white),
           ),
+        ),
+      ),
       backgroundColor: const Color.fromARGB(255, 18, 18, 18),
       body: Column(
         children: [
@@ -80,16 +79,16 @@ class _CalendarState extends State<Calendar> {
 
                 Color textColor;
                 if (netAmount > 0) {
-                  textColor = Colors.teal; 
+                  textColor = Colors.teal;
                 } else if (netAmount < 0) {
-                  textColor = Colors.red; 
+                  textColor = Colors.red;
                 } else {
-                  textColor = Colors.grey; 
+                  textColor = Colors.grey;
                 }
 
                 String displayText = netAmount == 0
-                  ? "0"
-                  : "${netAmount > 0 ? '+' : ''}${netAmount.toStringAsFixed(2)}"; 
+                    ? "0"
+                    : "${netAmount > 0 ? '+' : ''}${netAmount.toStringAsFixed(2)}";
 
                 return Container(
                   margin: const EdgeInsets.all(4.0),
@@ -105,7 +104,6 @@ class _CalendarState extends State<Calendar> {
                     ],
                   ),
                 );
-
               },
             ),
             calendarStyle: CalendarStyle(
@@ -120,7 +118,7 @@ class _CalendarState extends State<Calendar> {
                 borderRadius: BorderRadius.circular(8),
               ),
               selectedDecoration: BoxDecoration(
-                color: Colors.deepOrangeAccent,
+                color: const Color.fromARGB(255, 166, 53, 19),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -133,19 +131,48 @@ class _CalendarState extends State<Calendar> {
               rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 10),
+          _infoRow('Selected Day', '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}'),
+          const SizedBox(height: 10),
           Expanded(
-            child: Column(
+            child: ListView(
               children: [
-                _infoRow('Selected Day',
-                    '${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}'),
-                _infoDivider(),
-                _infoRow('Total Payments', '\$$totalPayments'),
-                _infoDivider(),
-                _infoRow('Total Received Payments', '\$$totalReceivedPayments'),
-                _infoDivider(),
-                _infoRow(
-                    'Total Recurring Payments', '\$$totalRecurringPayments'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: _buildExpansionTile(
+                    'Total Payments',
+                    '\$$totalPayments',
+                    getAllInfoOfSelectedDay(
+                      _selectedDay.day,
+                      _selectedDay.month.toString(),
+                      _selectedDay.year.toString(),
+                    ).map((payment) => _infoRow(payment['description'], '\$${payment['amount']}')).toList(),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: _buildExpansionTile(
+                    'Total Received Payments',
+                    '\$$totalReceivedPayments',
+                    getAllInfoOfSelectedDay(
+                      _selectedDay.day,
+                      _selectedDay.month.toString(),
+                      _selectedDay.year.toString(),
+                    ).map((payment) => _infoRow(payment['description'], '\$${payment['amount']}')).toList(),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: _buildExpansionTile(
+                    'Total Recurring Payments',
+                    '\$$totalRecurringPayments',
+                    getAllInfoOfSelectedDay(
+                      _selectedDay.day,
+                      _selectedDay.month.toString(),
+                      _selectedDay.year.toString(),
+                    ).map((payment) => _infoRow(payment['description'], '\$${payment['amount']}')).toList(),
+                  ),
+                ),
               ],
             ),
           ),
@@ -154,12 +181,14 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  
+  List<Map<String, dynamic>> getAllInfoOfSelectedDay(int day, String month, String year) {
+    return getAllInfoForCalendar(day, month, year); // from calculations.dart
+  }
 
   double getTotalPayments(DateTime date) {
     List<double> payments = [];
     double total = 0;
-    String day = date.day.toString().split("/")[0];
+    String day = date.day.toString();
     String month = date.month.toString();
     String year = date.year.toString();
 
@@ -189,6 +218,20 @@ class _CalendarState extends State<Calendar> {
       total += payment;
     }
     return total;
+  }
+
+  Widget _buildExpansionTile(String title, String value, List<Widget> children) {
+    return ExpansionTile(
+      title: _infoRow(title, value),
+      childrenPadding: const EdgeInsets.symmetric(horizontal: 20), // Ensure the padding is consistent
+      children: children.map((child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20), // Add padding to each child
+          child: child,
+        );
+      }).toList(),
+      tilePadding: EdgeInsets.zero, // Remove default padding
+    );
   }
 
   Widget _infoRow(String title, String value) {

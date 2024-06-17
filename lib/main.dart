@@ -16,8 +16,8 @@ import 'package:test/services/auth/auth_gate.dart';
 import 'package:test/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
-//START WITH GRAPHHH
 //- settings page
+// - calendar page
 
 //--------------------To FIX---------------------
 //calculate one time per month the salary , add something to track it per month and year
