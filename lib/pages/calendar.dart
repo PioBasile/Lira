@@ -5,6 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 // ignore: depend_on_referenced_packages
 import 'package:test/services/calculations/calculations.dart';
 
+
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
 
@@ -142,11 +143,14 @@ class _CalendarState extends State<Calendar> {
                   child: _buildExpansionTile(
                     'Total Payments',
                     '\$$totalPayments',
-                    getAllInfoOfSelectedDay(
+                    detailedPayments(
                       _selectedDay.day,
                       _selectedDay.month.toString(),
                       _selectedDay.year.toString(),
-                    ).map((payment) => _infoRow(payment['description'], '\$${payment['amount']}')).toList(),
+                    ).map((payment) {
+                      var details = payment.values.first;
+                      return _infoRow(details['description'], '\$${details['amount']}');
+                    }).toList(),
                   ),
                 ),
                 Padding(
@@ -183,6 +187,18 @@ class _CalendarState extends State<Calendar> {
 
   List<Map<String, dynamic>> getAllInfoOfSelectedDay(int day, String month, String year) {
     return getAllInfoForCalendar(day, month, year); // from calculations.dart
+  }
+
+  List<Map<int, dynamic>> detailedPayments(int day, String month, String year) {
+    return getDetailedPayedPerDay(day, month, year); // from calculations.dart
+  }
+
+  List<Map<int, dynamic>> detailedReceivedPayments(int day, String month, String year) {
+    return getDetailedReceivedPerDay(day, month, year); // from calculations.dart
+  }
+
+  List<Map<int, dynamic>> detailedRecurringPayments(int day) {
+    return getDetailedRecurringPerDay(day); // from calculations.dart
   }
 
   double getTotalPayments(DateTime date) {

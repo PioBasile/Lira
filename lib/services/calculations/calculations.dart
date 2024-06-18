@@ -1,7 +1,9 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, depend_on_referenced_packages
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test/services/database/firestore.dart';
+import 'package:intl/intl.dart';
+
 
 List<Map<String, dynamic>> payments = [];
 List<Map<String, dynamic>> receivedPayments = [];
@@ -347,4 +349,51 @@ List<Map<String, dynamic>> getAllInfoForCalendar(int day, String month,String ye
   }
 
   return allInfo;
+}
+
+// get all the payments for the day with description and amount and categories
+List<Map<int, dynamic>> getDetailedPayedPerDay(int day, String month, String year) {
+  List<Map<String, dynamic>> payments = getPaymentsForMonth(month, year);
+  List<Map<int, dynamic>> detailedPayments = [];
+
+  print("Payments for $month $year: $payments");
+  
+  for (int i = 0; i < payments.length; i++) {
+    if (payments[i]['timestamp'] != null) {
+      DateTime date = DateFormat('MMMM d, yyyy at h:mm:ss a').parse(payments[i]['timestamp']);
+      if (date.day == day) {
+        detailedPayments.add({i + 1: payments[i]});
+      }
+    }
+  }
+  
+  print("Detailed payments: $detailedPayments");
+  return detailedPayments;
+}
+
+//get all the received payments for the day with description and amount and whom
+List<Map<int, dynamic>> getDetailedReceivedPerDay(int day, String month, String year){
+  List<Map<String, dynamic>> receivedPayments = getReceivedPaymentsForMonth(month, year);
+  
+  List<Map<int, dynamic>> detailedReceivedPayments = [];
+  for (int i = 0; i < receivedPayments.length; i++) {
+    DateTime date = receivedPayments[i]['timestamp'].toDate();
+    if (date.day == day && date.month == months.indexOf(month) + 1 && date.year == int.parse(year)){
+      detailedReceivedPayments.add({i + 1: receivedPayments[i]});
+    }
+  }
+  return detailedReceivedPayments;
+}
+
+//get all the recurring payments for the day with description and amount
+List<Map<int, dynamic>> getDetailedRecurringPerDay(int day){
+  List<Map<String, dynamic>> recurringPayments = getRecurringPaymentsForMonth();
+  
+  List<Map<int, dynamic>> detailedRecurringPayments = [];
+  for (int i = 0; i < recurringPayments.length; i++) {
+    if (recurringPayments[i]['date'] == day.toString()) {
+      detailedRecurringPayments.add({i + 1: recurringPayments[i]});
+    }
+  }
+  return detailedRecurringPayments;
 }

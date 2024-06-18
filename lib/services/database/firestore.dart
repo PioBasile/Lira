@@ -277,9 +277,4 @@ class FireStoreService {
     return info;
   }
 
-//------------------Get ALL INFO FOR CALENDAR---------------------------
-  
-
-  
-
 }
