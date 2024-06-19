@@ -1,6 +1,6 @@
 # Lira - Expense Tracker
 
-## Overview - A Flutter Project
+## Overview 
 Lira is a comprehensive budgeting app designed to help you manage your finances efficiently. Whether you want to track daily expenses, manage recurring payments, or monitor your spending habits, Lira provides all the tools you need to stay on top of your financial health.
 
 ## Features
