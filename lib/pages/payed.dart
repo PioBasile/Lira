@@ -221,9 +221,12 @@ class _PayedState extends State<Payed> {
       return category['name'];
     }).toList();
 
-    // Default to "not specified" if no category is selected
     if (selectedCategories.isEmpty) {
       selectedCategories.add("not specified");
+    }
+
+    if(descriptionController.text.isEmpty){
+      description = "No description";
     }
 
     FireStoreService service = FireStoreService();

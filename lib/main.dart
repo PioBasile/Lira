@@ -17,7 +17,6 @@ import 'package:test/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
 //- settings page
-// - calendar page , idk doesnt work
 
 //--------------------To FIX---------------------
 //calculate one time per month the salary , add something to track it per month and year
@@ -25,13 +24,12 @@ import 'package:test/services/calculations/calculations.dart';
 //when edit the whole db gets deleted , fix it
 
 /* -------------------- SHIT TO DO ---------------------------------
-- add somewehere to show description in calendar
 - make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
-- on calendar possibility to see description and shit by pressing on day and per mounth how much u spent
 - add currency maybe , idk if good or no, if yes in setting page
 - maybe add more graphs , possibilty to switch between month view and day view, maybe add a received and payed graph 
   and a whole month view , day by day (baton and shit) 
+- add annotations in the code
 
 -------------------AT THE END ------------------
 - change language , setting page

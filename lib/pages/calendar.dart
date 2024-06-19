@@ -1,9 +1,10 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-// ignore: depend_on_referenced_packages
+import 'package:test/components/detailed_widget.dart';
 import 'package:test/services/calculations/calculations.dart';
+import 'package:intl/intl.dart';
 
 
 class Calendar extends StatefulWidget {
@@ -143,13 +144,18 @@ class _CalendarState extends State<Calendar> {
                   child: _buildExpansionTile(
                     'Total Payments',
                     '\$$totalPayments',
-                    detailedPayments(
+                    detailedPayedDay(
                       _selectedDay.day,
                       _selectedDay.month.toString(),
                       _selectedDay.year.toString(),
                     ).map((payment) {
                       var details = payment.values.first;
-                      return _infoRow(details['description'], '\$${details['amount']}');
+                      return DetailedPaymentRow(
+                        amount: details['amount'],
+                        time: DateFormat('HH:mm').format(details['timestamp'].toDate()),
+                        description: details['description'],
+                        category: details['categories'].join(', '),
+                      );
                     }).toList(),
                   ),
                 ),
@@ -158,11 +164,19 @@ class _CalendarState extends State<Calendar> {
                   child: _buildExpansionTile(
                     'Total Received Payments',
                     '\$$totalReceivedPayments',
-                    getAllInfoOfSelectedDay(
+                    detailedReceivedDay(
                       _selectedDay.day,
                       _selectedDay.month.toString(),
                       _selectedDay.year.toString(),
-                    ).map((payment) => _infoRow(payment['description'], '\$${payment['amount']}')).toList(),
+                    ).map((payment) {
+                      var details = payment.values.first;
+                      return DetailedReceivedRow(
+                        amount: details['amount'],
+                        time: DateFormat('HH:mm').format(details['timestamp'].toDate()),
+                        description: details['description'],
+                        fromWhom: details['personneWhoSentMoney'],
+                      );
+                    }).toList(),
                   ),
                 ),
                 Padding(
@@ -170,11 +184,17 @@ class _CalendarState extends State<Calendar> {
                   child: _buildExpansionTile(
                     'Total Recurring Payments',
                     '\$$totalRecurringPayments',
-                    getAllInfoOfSelectedDay(
+                    detailedRecurringDay(
                       _selectedDay.day,
-                      _selectedDay.month.toString(),
-                      _selectedDay.year.toString(),
-                    ).map((payment) => _infoRow(payment['description'], '\$${payment['amount']}')).toList(),
+                    ).map((payment) {
+                      var details = payment.values.first;
+                      return DetailedPaymentRow(
+                        amount: details['amount'],
+                        time:'Every ${_selectedDay.day.toString()}',
+                        description: details['description'],
+                        category: '',
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
@@ -185,20 +205,16 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  List<Map<String, dynamic>> getAllInfoOfSelectedDay(int day, String month, String year) {
-    return getAllInfoForCalendar(day, month, year); // from calculations.dart
+  List<Map<int, dynamic>> detailedPayedDay(int day, String month, String year) {
+    return getDetailedPayedPerDay(day, month, year);
   }
 
-  List<Map<int, dynamic>> detailedPayments(int day, String month, String year) {
-    return getDetailedPayedPerDay(day, month, year); // from calculations.dart
+  List<Map<int, dynamic>> detailedReceivedDay(int day, String month, String year) {
+    return getDetailedReceivedPerDay(day, month, year);
   }
 
-  List<Map<int, dynamic>> detailedReceivedPayments(int day, String month, String year) {
-    return getDetailedReceivedPerDay(day, month, year); // from calculations.dart
-  }
-
-  List<Map<int, dynamic>> detailedRecurringPayments(int day) {
-    return getDetailedRecurringPerDay(day); // from calculations.dart
+  List<Map<int, dynamic>> detailedRecurringDay(int day) {
+    return getDetailedRecurringPerDay(day);
   }
 
   double getTotalPayments(DateTime date) {
@@ -273,6 +289,7 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
+  // ignore: unused_element
   Widget _infoDivider() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),

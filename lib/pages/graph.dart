@@ -52,7 +52,7 @@ class _GraphState extends State<Graph> {
       for(var cate in category){
         // ignore: unnecessary_null_comparison
         if (cate != null && amount != null) {
-          dataMap[cate] = (dataMap[cate] ?? 0) + amount; // Sum amounts per category
+          dataMap[cate] = (dataMap[cate] ?? 0) + amount; 
         }
       }
     }
