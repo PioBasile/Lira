@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class DetailedPaymentRow extends StatelessWidget {
   final double amount;
   final String time;
@@ -34,6 +33,7 @@ class DetailedPaymentRow extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 4), // Add space between rows
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -86,6 +86,7 @@ class DetailedReceivedRow extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 4), // Add space between rows
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

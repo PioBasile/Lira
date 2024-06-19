@@ -24,6 +24,8 @@ import 'package:test/services/calculations/calculations.dart';
 //when edit the whole db gets deleted , fix it
 
 /* -------------------- SHIT TO DO ---------------------------------
+- forgot pass (check yt)
+- Good read me file
 - make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
 - add currency maybe , idk if good or no, if yes in setting page
