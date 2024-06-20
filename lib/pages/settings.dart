@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/services/database/firestore.dart';
 
 class Settings extends StatelessWidget {
   Settings({super.key});
@@ -43,7 +44,7 @@ class Settings extends StatelessWidget {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              FireStoreService().deleteAccount();
                             },
                             child: const Text('Delete Account'),
                           ),

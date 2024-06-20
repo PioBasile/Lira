@@ -10,6 +10,12 @@ class FireStoreService {
   // Get the current user
   User? user = AuthService().getCurrentUser();
 
+  Future<void> deleteAccount() async {
+    if (user != null) {
+      await user?.delete();
+    }
+  }
+
   //-----------------------PAYMENT/RECEIPT-----------------------
   Future<void> updateOrCreateTransaction(double amount, String description,
       DateTime timestamp, List<dynamic> categories) async {
@@ -231,19 +237,9 @@ class FireStoreService {
   }
 
 //-------------------------------INFO------------------------------
-  Future <void> updateOrCreateInfo(double salary, double maxSpendPerDay,double amountBank) async {
+  Future <void> createInfo(double salary, double maxSpendPerDay,double amountBank) async {
     DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
 
-    DocumentSnapshot snapshot = await userDoc.get();
-
-    if (snapshot.exists) {
-      await userDoc.update({
-        'salary': salary,
-        'amountBank': amountBank,
-        'maxSpendPerDay': maxSpendPerDay
-      });
-      print('info updated');
-    }
     await userDoc.set({
         'Salary&AmountBank&MaxSpend': {
           'salary': salary, 
@@ -253,6 +249,34 @@ class FireStoreService {
     });
     print('info created');
   }
+
+  Future<void> updateInfo(double salary, double maxSpendPerDay, double amountBank) async {
+    try {
+      if (user == null || user?.uid == null) {
+        print('User is not authenticated or UID is null');
+        return;
+      }
+
+      DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+
+      DocumentSnapshot snapshot = await userDoc.get();
+
+      if (snapshot.exists) {
+        await userDoc.update({
+          'Salary&AmountBank&MaxSpend.salary': salary,
+          'Salary&AmountBank&MaxSpend.amountBank': amountBank,
+          'Salary&AmountBank&MaxSpend.maxSpendPerDay': maxSpendPerDay,
+        });
+        print('Info updated successfully');
+      } else {
+        print('User document does not exist');
+      }
+    } catch (e) {
+      print('Failed to update info: $e');
+    }
+  }
+
+
 
   Future<Map<String, double>> getInfoFromDB() async {
     Map<String, double> info = {};

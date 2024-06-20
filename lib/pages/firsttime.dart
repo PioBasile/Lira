@@ -111,7 +111,7 @@ class _FirstTimeState extends State<FirstTime> {
     double maxSpendingDay = double.parse(maxSpendingDayController.text);
     double salary = double.parse(salaryController.text);
     
-    FireStoreService().updateOrCreateInfo(salary,maxSpendingDay, bankAmount);
+    FireStoreService().createInfo(salary,maxSpendingDay, bankAmount);
   }
 
 }

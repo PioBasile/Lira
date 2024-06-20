@@ -207,7 +207,7 @@ class _InfoState extends State<Info> {
       return;
     }
 
-    await FireStoreService().updateOrCreateInfo(
+    await FireStoreService().updateInfo(
       salary,
       maxSpendPerDay,
       amountBank,

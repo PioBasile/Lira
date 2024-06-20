@@ -20,13 +20,10 @@ import 'package:test/services/calculations/calculations.dart';
 
 //--------------------To FIX---------------------
 //calculate one time per month the salary , add something to track it per month and year
-//when i change the max spending per month , the daily progress resets , fix it
-//when edit the whole db gets deleted , fix it
 
 /* -------------------- SHIT TO DO ---------------------------------
+- app logo from home page 
 - forgot pass (check yt)
-- Good read me file
-- make the db work and link it with everything
 - add settings page , maybe to delete account or some shit
 - add currency maybe , idk if good or no, if yes in setting page
 - maybe add more graphs , possibilty to switch between month view and day view, maybe add a received and payed graph 

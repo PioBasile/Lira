@@ -158,11 +158,11 @@ class _PayedState extends State<Payed> {
                     child: Text('Daily Progress',
                         style: TextStyle(color: Colors.white, fontSize: 20))),
                 LinearPercentIndicator(
-                  width: MediaQuery.of(context).size.width - 32, // Dynamic width based on screen size
+                  width: MediaQuery.of(context).size.width - 32,
                   percent: percentSpent.clamp(0, 1),
                   animation: true,
                   animationDuration: 1000,
-                  lineHeight: 30,
+                  lineHeight: 40,
                   center: Text(
                     todaySpent > maxSpendingLimit
                         ? "${(percentSpent * 100).toStringAsFixed(1)}% - Over by \$${(todaySpent - maxSpendingLimit).toStringAsFixed(2)}"
