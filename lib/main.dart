@@ -19,7 +19,8 @@ import 'package:test/services/calculations/calculations.dart';
 //- settings page
 
 //--------------------To FIX---------------------
-//calculate one time per month the salary , add something to track it per month and year
+//calculate one time per month the salary , ad10d something to track it per month and year
+//add somewhere no spaces in firstime page
 
 /* -------------------- SHIT TO DO ---------------------------------
 - app logo from home page 
@@ -29,6 +30,7 @@ import 'package:test/services/calculations/calculations.dart';
 - maybe add more graphs , possibilty to switch between month view and day view, maybe add a received and payed graph 
   and a whole month view , day by day (baton and shit) 
 - add annotations in the code
+- history , list to add everything like bank cards shit
 
 -------------------AT THE END ------------------
 - change language , setting page

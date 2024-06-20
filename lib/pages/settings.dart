@@ -33,11 +33,11 @@ class Settings extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch, 
                   children: [
                     const SizedBox(height: 50),
-                    _infoRow("language", languageController.text),
+                    _infoRow("Language", languageController.text),
                     _infoDivider(),
-                    _infoRow("theme", themeController.text),
+                    _infoRow("Theme", themeController.text),
                     _infoDivider(),
-                    _infoRow("currency", currencyController.text),
+                    _infoRow("Currency", currencyController.text),
                     Center(
                       child: ButtonBar(
                         alignment: MainAxisAlignment.center, 
