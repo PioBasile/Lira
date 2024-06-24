@@ -7,7 +7,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:test/components/buttonbox.dart';
 import 'package:test/components/inputbox.dart';
 import 'package:test/services/calculations/calculations.dart';
-import 'package:test/services/database/firestore.dart';
+import 'package:test/services/database/db_manip.dart';
 
 class Payed extends StatefulWidget {
   const Payed({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:test/services/auth/auth_service.dart';
 import 'package:test/services/calculations/calculations.dart';
-import 'package:test/services/database/firestore.dart'; // For changing status bar color
+import 'package:test/services/database/db_manip.dart'; // For changing status bar color
 
 class Info extends StatefulWidget {
   const Info({super.key});

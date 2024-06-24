@@ -50,6 +50,10 @@ class _HomeState extends State<Home> {
     Navigator.pushNamed(context, '/howitworks');
   }
 
+  void _goToHistory() {
+    Navigator.pushNamed(context, '/history');
+  }
+
   void logout(){
     final authservice = AuthService();
     authservice.signOut();
@@ -133,6 +137,15 @@ class _HomeState extends State<Home> {
                           iconColor: Colors.white,
                           leading: const Icon(Icons.data_usage_rounded),
                           onTap: _goToGraph,
+                        ),
+
+                        const SizedBox(height: 10),
+                        ListTile(
+                          title: const Text('History'),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                          leading: const Icon(Icons.history_rounded),
+                          onTap: _goToHistory,
                         ),
                         
                         const SizedBox(height: 10),

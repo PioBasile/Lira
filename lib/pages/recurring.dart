@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/services/database/firestore.dart';
+import 'package:test/services/database/db_manip.dart';
 
 class RecurringPaymentsPage extends StatefulWidget {
   const RecurringPaymentsPage({super.key});

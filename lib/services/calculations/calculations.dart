@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, depend_on_referenced_packages
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:test/services/database/firestore.dart';
+import 'package:test/services/database/db_manip.dart';
 // ignore: unused_import
 import 'package:intl/intl.dart';
 
@@ -393,6 +393,4 @@ List<Map<String, dynamic>> getAllInfoForCalendar(int day, String month,String ye
 
   return allInfo;
 }
-
-
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test/components/buttonbox.dart';
 import 'package:test/components/inputbox.dart';
-import 'package:test/services/database/firestore.dart';
+import 'package:test/services/database/db_manip.dart';
 
 class FirstTime extends StatefulWidget {
   const FirstTime({super.key});
