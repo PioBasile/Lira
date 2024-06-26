@@ -17,7 +17,7 @@ import 'package:test/services/auth/auth_gate.dart';
 import 'package:test/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
-//- settings page
+//- settings page!!!
 
 //--------------------To FIX---------------------
 //calculate one time per month the salary , ad10d something to track it per month and year
@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
         
         '/history': (context) => const History(),
 
-        '/settings': (context) => Settings(),
+        '/settings': (context) => const Settings(),
       },
     );
   }

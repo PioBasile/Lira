@@ -301,5 +301,64 @@ class FireStoreService {
     return info;
   }
 
+//---------------------------------Settings-------------------------------------
+
+  Future<void> saveOrUpdateSettings(bool isDark, String language, String currency) async{
+    try {
+      if (user == null || user?.uid == null) {
+        print('User is not authenticated or UID is null');
+        return;
+      }
+
+      DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+
+      DocumentSnapshot snapshot = await userDoc.get();
+
+      if (snapshot.exists) {
+        await userDoc.update({
+          'Settings.isDark': isDark,
+          'Settings.language': language,
+          'Settings.currency': currency,
+        });
+        print('Settings updated successfully');
+      } else {
+        await userDoc.set({
+          'Settings': {
+            'isDark': isDark,
+            'language': language,
+            'currency': currency,
+          }
+        }, SetOptions(merge: true));
+        print('Settings created');
+      }
+    } catch (e) {
+      print('Failed to update settings: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> getSettingsFromDB() async {
+    Map<String, dynamic> settings = {
+      'isDark': true,
+      'language': 'English',
+      'currency': 'USD',
+    }; // Default settings
+
+    if (user != null && user?.uid != null) {
+      DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
+      try {
+        DocumentSnapshot snapshot = await userDoc.get();
+        if (snapshot.exists) {
+          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+          if (data.containsKey('Settings')) {
+            settings = data['Settings'];
+          }
+        }
+      } catch (e) {
+        print("Error getting settings: $e");
+      }
+    }
+    return settings;
+}
+
 
 }
