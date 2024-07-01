@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test/components/buttonbox.dart';
-import 'package:test/components/inputbox.dart';
-import 'package:test/services/database/db_manip.dart';
+import 'package:lira/components/buttonbox.dart';
+import 'package:lira/components/inputbox.dart';
+import 'package:lira/services/database/db_manip.dart';
 
 class FirstTime extends StatefulWidget {
   const FirstTime({super.key});
@@ -12,11 +12,10 @@ class FirstTime extends StatefulWidget {
 
 class _FirstTimeState extends State<FirstTime> {
   final TextEditingController bankAmountController = TextEditingController();
-  final TextEditingController maxSpendingDayController =TextEditingController();
+  final TextEditingController maxSpendingDayController = TextEditingController();
   final TextEditingController salaryController = TextEditingController();
   List<String> categories = [];
   List<Map<String, dynamic>> recurringPayments = [];
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +38,7 @@ class _FirstTimeState extends State<FirstTime> {
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
-                )
-            ),
+                )),
             const SizedBox(height: 20),
             InputBox(
               controller: bankAmountController,
@@ -51,9 +49,9 @@ class _FirstTimeState extends State<FirstTime> {
             ),
             const SizedBox(height: 20),
             InputBox(
-              controller: salaryController, 
-              hintText:'Enter your salary', 
-              obscureText: false, 
+              controller: salaryController,
+              hintText: 'Enter your salary',
+              obscureText: false,
               obligatory: true,
               keyboardType: "number",
             ),
@@ -66,15 +64,12 @@ class _FirstTimeState extends State<FirstTime> {
               keyboardType: "number",
             ),
             const SizedBox(height: 20),
-            
             const Text(
                 'We strongly encourage you to go to the profile page to add recurring payments and categories ',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
-                )
-            ),
-            
+                )),
             const SizedBox(height: 30),
             ButtonBox(
               text: 'Submit',
@@ -102,16 +97,25 @@ class _FirstTimeState extends State<FirstTime> {
   }
 
   void saveInfo() {
-    if(bankAmountController.text.isEmpty || maxSpendingDayController.text.isEmpty || salaryController.text.isEmpty){
+    if (bankAmountController.text.trim().isEmpty ||
+        maxSpendingDayController.text.trim().isEmpty ||
+        salaryController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Not all field were filled in'))
+        const SnackBar(content: Text('Not all fields were filled in')),
+      );
+      return;
+    }
+
+    try {
+      double bankAmount = double.parse(bankAmountController.text.trim().replaceAll(' ', ''));
+      double maxSpendingDay = double.parse(maxSpendingDayController.text.trim().replaceAll(' ', ''));
+      double salary = double.parse(salaryController.text.trim().replaceAll(' ', ''));
+
+      FireStoreService().createInfo(salary, maxSpendingDay, bankAmount);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter valid numbers')),
       );
     }
-    double bankAmount = double.parse(bankAmountController.text);
-    double maxSpendingDay = double.parse(maxSpendingDayController.text);
-    double salary = double.parse(salaryController.text);
-    
-    FireStoreService().createInfo(salary,maxSpendingDay, bankAmount);
   }
-
 }

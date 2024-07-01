@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test/pages/categorypage.dart';
-import 'package:test/pages/infopage.dart';
-import 'package:test/pages/recurring.dart';
+import 'package:lira/pages/categorypage.dart';
+import 'package:lira/pages/infopage.dart';
+import 'package:lira/pages/recurring.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});

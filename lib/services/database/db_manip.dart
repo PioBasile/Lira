@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:test/services/auth/auth_service.dart';
+import 'package:lira/services/auth/auth_service.dart';
 
 class FireStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

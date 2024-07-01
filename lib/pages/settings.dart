@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:test/services/database/db_manip.dart';
+import 'package:lira/services/database/db_manip.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

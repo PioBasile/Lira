@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:test/pages/home.dart';
-import 'package:test/pages/login.dart';
+import 'package:lira/pages/home.dart';
+import 'package:lira/pages/login.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});

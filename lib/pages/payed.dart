@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:test/components/buttonbox.dart';
-import 'package:test/components/inputbox.dart';
-import 'package:test/services/calculations/calculations.dart';
-import 'package:test/services/database/db_manip.dart';
+import 'package:lira/components/buttonbox.dart';
+import 'package:lira/components/inputbox.dart';
+import 'package:lira/services/calculations/calculations.dart';
+import 'package:lira/services/database/db_manip.dart';
 
 class Payed extends StatefulWidget {
   const Payed({super.key});
@@ -206,7 +206,15 @@ class _PayedState extends State<Payed> {
   }
 
   void _addPayment(BuildContext context) async {
-    double amount = double.tryParse(amountController.text) ?? 0.0;
+
+    if (amountController.text.isEmpty) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter an amount')));
+      return;
+    }
+
+    double amount = double.parse(amountController.text);
     String description = descriptionController.text;
     DateTime date = DateFormat('dd/MM/yyyy').parse(dateController.text);
     TimeOfDay time = TimeOfDay(

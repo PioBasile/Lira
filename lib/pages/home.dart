@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test/pages/payed.dart';
-import 'package:test/pages/received.dart';
-import 'package:test/services/auth/auth_service.dart';
+import 'package:lira/pages/payed.dart';
+import 'package:lira/pages/received.dart';
+import 'package:lira/services/auth/auth_service.dart';
 
 
 class Home extends StatefulWidget {

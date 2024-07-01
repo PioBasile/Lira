@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import 'package:test/services/calculations/calculations.dart';
+import 'package:lira/services/calculations/calculations.dart';
 
 
 class Graph extends StatefulWidget {

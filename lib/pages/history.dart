@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import 'package:test/components/history_detailed_row.dart';
-import 'package:test/services/calculations/calculations.dart';
+import 'package:lira/components/history_detailed_row.dart';
+import 'package:lira/services/calculations/calculations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class History extends StatefulWidget {

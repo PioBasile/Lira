@@ -1,20 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:test/firebase_options.dart';
-import 'package:test/pages/firsttime.dart';
-import 'package:test/pages/howitworks.dart';
-import 'package:test/pages/recurring.dart';
-import 'package:test/pages/register.dart';
-import 'package:test/pages/home.dart';
-import 'package:test/pages/login.dart';
-import 'package:test/pages/payed.dart';
-import 'package:test/pages/calendar.dart';
-import 'package:test/pages/profile.dart';
-import 'package:test/pages/graph.dart';
-import 'package:test/pages/settings.dart';
-import 'package:test/pages/history.dart';
-import 'package:test/services/auth/auth_gate.dart';
-import 'package:test/services/calculations/calculations.dart';
+import 'package:lira/firebase_options.dart';
+import 'package:lira/pages/firsttime.dart';
+import 'package:lira/pages/howitworks.dart';
+import 'package:lira/pages/recurring.dart';
+import 'package:lira/pages/register.dart';
+import 'package:lira/pages/home.dart';
+import 'package:lira/pages/login.dart';
+import 'package:lira/pages/payed.dart';
+import 'package:lira/pages/calendar.dart';
+import 'package:lira/pages/profile.dart';
+import 'package:lira/pages/graph.dart';
+import 'package:lira/pages/settings.dart';
+import 'package:lira/pages/history.dart';
+import 'package:lira/services/auth/auth_gate.dart';
+import 'package:lira/services/calculations/calculations.dart';
 
 // ----------------TO Continue--------------------
 //- settings page!!!

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/components/textbox.dart';
+import 'package:lira/components/textbox.dart';
 
 class HowItWorks extends StatelessWidget {
   const HowItWorks({super.key});

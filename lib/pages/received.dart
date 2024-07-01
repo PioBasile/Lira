@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test/components/inputbox.dart';
-import 'package:test/components/buttonbox.dart';
-import 'package:test/services/calculations/calculations.dart';
-import 'package:test/services/database/db_manip.dart';
+import 'package:lira/components/inputbox.dart';
+import 'package:lira/components/buttonbox.dart';
+import 'package:lira/services/calculations/calculations.dart';
+import 'package:lira/services/database/db_manip.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:avoid_keyboard/avoid_keyboard.dart';

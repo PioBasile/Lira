@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:test/components/detailed_widget.dart';
-import 'package:test/services/calculations/calculations.dart';
+import 'package:lira/components/detailed_widget.dart';
+import 'package:lira/services/calculations/calculations.dart';
 import 'package:intl/intl.dart';
 
 

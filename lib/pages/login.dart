@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test/components/inputbox.dart';
-import 'package:test/components/buttonbox.dart';
-import 'package:test/services/auth/auth_service.dart';
+import 'package:lira/components/inputbox.dart';
+import 'package:lira/components/buttonbox.dart';
+import 'package:lira/services/auth/auth_service.dart';
 
 class Login extends StatefulWidget {
   final void Function() onTap;

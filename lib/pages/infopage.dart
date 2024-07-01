@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:test/services/auth/auth_service.dart';
-import 'package:test/services/calculations/calculations.dart';
-import 'package:test/services/database/db_manip.dart'; // For changing status bar color
+import 'package:lira/services/auth/auth_service.dart';
+import 'package:lira/services/calculations/calculations.dart';
+import 'package:lira/services/database/db_manip.dart'; // For changing status bar color
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
 
 class Info extends StatefulWidget {
   const Info({super.key});
@@ -135,6 +137,12 @@ class _InfoState extends State<Info> {
                     borderSide: BorderSide(color: isEditing && !readOnly ? Colors.white : Colors.transparent),
                   ),
                 ),
+                inputFormatters: isEditing && !readOnly
+                    ? [
+                        FilteringTextInputFormatter.digitsOnly,
+                        ThousandsFormatter(),
+                      ]
+                    : [],
               ),
             ),
           ),
@@ -169,9 +177,9 @@ class _InfoState extends State<Info> {
     Map<String, double> infoFromDb = await FireStoreService().getInfoFromDB();
     setState(() {
       info = infoFromDb;
-      salaryController.text = info['salary']?.toString() ?? '0';
-      amountBankController.text = info['amountBank']?.toString() ?? '0';
-      maxSpendingController.text = info['maxSpendPerDay']?.toString() ?? '0';
+      salaryController.text = formatNumber(info['salary'] ?? 0);
+      amountBankController.text = formatNumber(info['amountBank'] ?? 0);
+      maxSpendingController.text = formatNumber(info['maxSpendPerDay'] ?? 0);
 
       String today = DateTime.now().day.toString();
       String month = DateTime.now().month.toString();
@@ -182,7 +190,7 @@ class _InfoState extends State<Info> {
       // ignore: avoid_print
       print(" syncBankToday = $sync");
 
-      amountBankController.text = sync.toString();
+      amountBankController.text = formatNumber(sync);
     });
   }
 
@@ -190,7 +198,7 @@ class _InfoState extends State<Info> {
     bool dataLoaded = await loadAllData();
     if (dataLoaded) {
       setState(() {
-        amountEndOfMonthController.text = getEOM().toString();
+        amountEndOfMonthController.text = formatNumber(getEOM());
       });
     } else {
       // ignore: avoid_print
@@ -199,9 +207,9 @@ class _InfoState extends State<Info> {
   }
 
   void _saveInfo() async {
-    double? amountBank = double.tryParse(amountBankController.text);
-    double? maxSpendPerDay = double.tryParse(maxSpendingController.text);
-    double? salary = double.tryParse(salaryController.text);
+    double? amountBank = double.tryParse(amountBankController.text.replaceAll(' ', ''));
+    double? maxSpendPerDay = double.tryParse(maxSpendingController.text.replaceAll(' ', ''));
+    double? salary = double.tryParse(salaryController.text.replaceAll(' ', ''));
 
     if (salary == null || amountBank == null || maxSpendPerDay == null) {
       return;
@@ -219,6 +227,27 @@ class _InfoState extends State<Info> {
       height: 12,
       thickness: 0.5,
       color: Colors.white24,
+    );
+  }
+
+  String formatNumber(double value) {
+    return NumberFormat('#,###', 'en_US').format(value);
+  }
+}
+
+class ThousandsFormatter extends TextInputFormatter {
+  // ignore: unused_field
+  static final RegExp _digitOnlyRegex = RegExp(r'\d+');
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final text = newValue.text;
+    final digitsOnly = text.replaceAll(' ', '');
+    final formattedText = NumberFormat('#,###', 'en_US').format(int.parse(digitsOnly)).replaceAll(',', ' ');
+
+    return newValue.copyWith(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
     );
   }
 }
