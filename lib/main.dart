@@ -21,21 +21,23 @@ import 'package:lira/services/calculations/calculations.dart';
 
 //--------------------To FIX---------------------
 //calculate one time per month the salary , ad10d something to track it per month and year
-//add somewhere no spaces in firstime page
+
 
 /* -------------------- TO DO ---------------------------------
+- add way to delete a payment
 - app logo from home page
 - forgot pass (check yt)
 - add settings page , maybe to delete account or some shit
 - add currency maybe , idk if good or no, if yes in setting page
 - maybe add more graphs , possibilty to switch between month view and day view, maybe add a received and payed graph 
-  and a whole month view , day by day (baton and shit) 
+  and a whole month view , day by day (batton and shit) 
 - add annotations in the code
 - in history, check the style with ppl
 
 -------------------AT THE END ------------------
 - change language , setting page
 - change theme , setting page
+- change currency , setting page
 
 */
 
