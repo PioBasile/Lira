@@ -157,14 +157,14 @@ class _HomeState extends State<Home> {
                           onTap: _goToProfile,
                         ),
                     
-                        const SizedBox(height: 10),
-                        ListTile(
-                          title: const Text('Settings'),
-                          textColor: Colors.white,
-                          iconColor: Colors.white,
-                          leading: const Icon(Icons.settings),
-                          onTap: _goToSettings,
-                        ),
+                        // const SizedBox(height: 10),
+                        // ListTile(
+                        //   title: const Text('Settings'),
+                        //   textColor: Colors.white,
+                        //   iconColor: Colors.white,
+                        //   leading: const Icon(Icons.settings),
+                        //   onTap: _goToSettings,
+                        // ),
                         
                         const SizedBox(height: 150),
                         

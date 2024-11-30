@@ -20,7 +20,8 @@ import 'package:lira/services/calculations/calculations.dart';
 //- settings page!!!
 
 //--------------------To FIX---------------------
-//calculate one time per month the salary , ad10d something to track it per month and year
+//calculate one time per month the salary , add something to track it per month and year
+//shit is not getting recieved payments
 
 
 /* -------------------- TO DO ---------------------------------
