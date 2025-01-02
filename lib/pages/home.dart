@@ -30,9 +30,9 @@ class _HomeState extends State<Home> {
     Navigator.pushNamed(context, '/profile');
   }
 
-  void _goToSettings() {
-    Navigator.pushNamed(context, '/settings');
-  }
+  // void _goToSettings() {
+  //   Navigator.pushNamed(context, '/settings');
+  // }
 
   int _pageindex = 0;
 

@@ -81,13 +81,18 @@ class FireStoreService {
     DocumentReference userDoc = _firestore.collection('users').doc(user?.uid);
     try {
       DocumentSnapshot snapshot = await userDoc.get();
-
-      if (snapshot.exists && snapshot.data() != null) {
-        var payments = snapshot.get('Received Payments');
-        if (payments is List<dynamic>) {
-          return List<Map<String, dynamic>>.from(payments);
+        if (snapshot.exists && snapshot.data() != null) {
+          final data = snapshot.data() as Map<String, dynamic>;
+      
+          if (data.containsKey('Received Payments')) {
+            var payments = data['Received Payments'];
+            if (payments is List<dynamic>) {
+              return List<Map<String, dynamic>>.from(payments);
+            }
+          } else {
+            print("Le champ 'Received Payments' n'existe pas dans ce document.");
+          }
         }
-      }
     } catch (e) {
       print("Error getting payments: $e");
     }
